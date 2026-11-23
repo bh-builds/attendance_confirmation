@@ -13,6 +13,7 @@
       --border: #e2e8f0;
       --text: #1e293b;
       --muted: #64748b;
+      --danger: #dc2626;
     }
     * {
       box-sizing: border-box;
@@ -67,6 +68,10 @@
       font-weight: 600;
       margin-bottom: 5px;
       color: var(--text);
+    }
+    .req {
+      color: var(--danger);
+      margin-left: 2px;
     }
     select, input, textarea {
       padding: 8px 10px;
@@ -277,45 +282,47 @@
     <div class="modal-card">
       <div class="modal-header">
         <h3>Pengajuan Klarifikasi Kehadiran</h3>
-        <button class="modal-close" onclick="closeModal()" aria-label="Tutup">&times;</button>
+        <button class="modal-close" type="button" onclick="closeModal()" aria-label="Tutup">&times;</button>
       </div>
 
-      <div class="modal-grid-2">
-        <div class="form-group" style="margin-bottom:0;">
-          <label for="modalDate">Tanggal</label>
-          <input type="text" id="modalDate" readonly>
+      <form id="clarificationForm" onsubmit="submitModalClarification(event)">
+        <div class="modal-grid-2">
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="modalDate">Tanggal</label>
+            <input type="text" id="modalDate" readonly>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="modalDuration">Total Durasi</label>
+            <input type="text" id="modalDuration" readonly>
+          </div>
         </div>
-        <div class="form-group" style="margin-bottom:0;">
-          <label for="modalDuration">Total Durasi</label>
-          <input type="text" id="modalDuration" readonly>
+
+        <div class="modal-grid-2">
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="modalCheckIn">Jam Datang</label>
+            <input type="time" step="1" id="modalCheckIn" oninput="recalcModalDuration()">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="modalCheckOut">Jam Pulang</label>
+            <input type="time" step="1" id="modalCheckOut" oninput="recalcModalDuration()">
+          </div>
         </div>
-      </div>
 
-      <div class="modal-grid-2">
-        <div class="form-group" style="margin-bottom:0;">
-          <label for="modalCheckIn">Jam Datang</label>
-          <input type="time" step="1" id="modalCheckIn" oninput="recalcModalDuration()">
+        <div class="form-group">
+          <label for="modalNotes">Keterangan / Alasan<span class="req">*</span></label>
+          <textarea id="modalNotes" rows="2" required placeholder="Wajib diisi — contoh: Lupa absen pulang sesi sore, Dinas Luar, atau Sakit..."></textarea>
         </div>
-        <div class="form-group" style="margin-bottom:0;">
-          <label for="modalCheckOut">Jam Pulang</label>
-          <input type="time" step="1" id="modalCheckOut" oninput="recalcModalDuration()">
+
+        <div class="form-group">
+          <label for="modalEvidence">Tautan Bukti Dukung (Google Drive / URL)<span class="req">*</span></label>
+          <input type="url" id="modalEvidence" required placeholder="https://drive.google.com/...">
         </div>
-      </div>
 
-      <div class="form-group">
-        <label for="modalNotes">Keterangan / Alasan</label>
-        <textarea id="modalNotes" rows="2" placeholder="Contoh: Lupa absen pulang sesi sore, Dinas Luar, atau Sakit..."></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="modalEvidence">Tautan Bukti Dukung (Google Drive / URL)</label>
-        <input type="url" id="modalEvidence" placeholder="https://drive.google.com/...">
-      </div>
-
-      <div class="modal-actions">
-        <button type="button" class="btn-secondary" onclick="closeModal()">Batal</button>
-        <button type="button" class="btn-primary" id="modalSaveBtn" onclick="submitModalClarification()">Simpan Klarifikasi</button>
-      </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" onclick="closeModal()">Batal</button>
+          <button type="submit" class="btn-primary" id="modalSaveBtn">Simpan Klarifikasi</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -422,7 +429,7 @@
         (rec.checkOut && rec.checkOut !== '-' && rec.checkOut !== '00:00:00') ? rec.checkOut : '';
       document.getElementById('modalDuration').value = rec.duration || '0 jam 0 menit';
       document.getElementById('modalNotes').value = rec.notes || '';
-      document.getElementById('modalEvidence').value = rec.evidenceLink || '';
+      document.getElementById('modalEvidence').value = rec.linkGDrive || rec.evidenceLink || '';
 
       document.getElementById('clarificationModal').classList.add('open');
     }
@@ -459,10 +466,26 @@
       }
     }
 
-    async function submitModalClarification() {
+    async function submitModalClarification(e) {
+      e.preventDefault();
+
       const pIdx = document.getElementById('participantSelect').value;
       const person = appData.participants[pIdx];
       if (!person) return;
+
+      const notesVal = document.getElementById('modalNotes').value.trim();
+      const linkVal = document.getElementById('modalEvidence').value.trim();
+
+      if (!notesVal) {
+        alert('Keterangan / Alasan wajib diisi.');
+        document.getElementById('modalNotes').focus();
+        return;
+      }
+      if (!linkVal) {
+        alert('Tautan Bukti Dukung (Google Drive / URL) wajib diisi.');
+        document.getElementById('modalEvidence').focus();
+        return;
+      }
 
       const btn = document.getElementById('modalSaveBtn');
       btn.disabled = true;
@@ -475,8 +498,8 @@
         status: 'Terklarifikasi',
         checkIn: document.getElementById('modalCheckIn').value,
         checkOut: document.getElementById('modalCheckOut').value,
-        notes: document.getElementById('modalNotes').value,
-        evidenceLink: document.getElementById('modalEvidence').value
+        notes: notesVal,
+        linkGDrive: linkVal
       };
 
       try {
