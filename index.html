@@ -289,6 +289,11 @@
       color: #1b5e20;
       border: 1px solid #c8e6c9;
     }
+    .badge-short-duration {
+      background: #E4872D;
+      color: #4A2203;
+      border: 1px solid #c46d18;
+    }
     .badge-warn {
       background: #fff8e1;
       color: #8d5b00;
@@ -704,6 +709,28 @@
       }
     }
 
+    function parseDurationMinutes(durationStr) {
+      if (!durationStr || durationStr === '-') return null;
+      const str = String(durationStr).trim().toLowerCase();
+
+      const jamMatch = str.match(/(\d+)\s*jam/);
+      const menitMatch = str.match(/(\d+)\s*menit/);
+      if (jamMatch || menitMatch) {
+        const hrs = jamMatch ? parseInt(jamMatch[1], 10) : 0;
+        const mins = menitMatch ? parseInt(menitMatch[1], 10) : 0;
+        return hrs * 60 + mins;
+      }
+
+      if (str.includes(':')) {
+        const parts = str.split(':').map(Number);
+        if (parts.length >= 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+          return parts[0] * 60 + parts[1];
+        }
+      }
+
+      return null;
+    }
+
     function formatStatusLabel(rec) {
       if (rec.isClarified) return 'Terklarifikasi';
       if (rec.status.includes('Missing Check-Out')) return 'Belum Absen Pulang';
@@ -718,10 +745,19 @@
       tbody.innerHTML = '';
 
       person.records.forEach((rec, recIdx) => {
+        const durationMins = parseDurationMinutes(rec.duration);
+        const isUnderSixHours = durationMins !== null && durationMins < 360;
+
         let badgeClass = 'badge-complete';
-        if (rec.isClarified) badgeClass = 'badge-clarified';
-        else if (rec.status.includes('Missing')) badgeClass = 'badge-warn';
-        else if (rec.status.includes('Absent')) badgeClass = 'badge-absent';
+        if (rec.isClarified) {
+          badgeClass = 'badge-clarified';
+        } else if (rec.status.includes('Absent')) {
+          badgeClass = 'badge-absent';
+        } else if (isUnderSixHours) {
+          badgeClass = 'badge-short-duration';
+        } else if (rec.status.includes('Missing')) {
+          badgeClass = 'badge-warn';
+        }
 
         const statusText = formatStatusLabel(rec);
 
