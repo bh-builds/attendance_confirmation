@@ -468,8 +468,34 @@
       text-align: center;
       font-size: 0.7rem;
       color: var(--muted);
-      margin-top: 2px;
-      padding-bottom: 8px;
+      margin-top: 4px;
+      padding-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer-pivot-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background-color: #ffffff;
+      border: 1px solid #b2dfdb;
+      color: var(--kemenkes-teal-dark);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 2px 6px rgba(0, 91, 79, 0.06);
+      transition: all 0.16s ease;
+    }
+    .footer-pivot-link:hover {
+      background-color: var(--kemenkes-teal);
+      border-color: var(--kemenkes-teal);
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(0, 121, 107, 0.2);
+      transform: translateY(-1px);
     }
   </style>
   <link rel="icon" type="image/png" sizes="256x256" href="./favicon.png">
