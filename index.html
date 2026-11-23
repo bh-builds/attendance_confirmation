@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Attendance Clarification • HKN 62</title>
+  <title>Klarifikasi Kehadiran • HKN ke-62</title>
   <style>
     :root {
       --primary: #0f766e;
@@ -13,6 +13,9 @@
       --border: #e2e8f0;
       --text: #1e293b;
       --muted: #64748b;
+    }
+    * {
+      box-sizing: border-box;
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -63,10 +66,15 @@
       border-radius: 6px;
       font-size: 0.92rem;
       font-family: inherit;
+      background-color: #fff;
     }
     select:focus, input:focus {
       outline: none;
       border-color: var(--primary);
+    }
+    input[readonly] {
+      background-color: #f1f5f9;
+      color: var(--muted);
     }
     .btn {
       background: var(--primary);
@@ -77,6 +85,7 @@
       font-weight: 600;
       cursor: pointer;
       margin-top: 16px;
+      font-size: 0.92rem;
     }
     .btn:hover { background: var(--primary-hover); }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -136,7 +145,7 @@
 <body>
   <div class="container">
     <div class="card">
-      <h1>Klarifikasi Kehadiran (Attendance Clarification)</h1>
+      <h1>Klarifikasi Kehadiran • HKN ke-62</h1>
       <div class="subtitle">Pilih nama peserta untuk melihat rekap kehadiran dan mengajukan klarifikasi ketidakhadiran atau jam datang/pulang.</div>
 
       <div class="grid">
@@ -214,8 +223,7 @@
   </div>
 
   <script>
-    // Replace with your deployed Google Apps Script Web App URL (/exec)
-    const GAS_WEB_APP_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL';
+    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzM80HcT9z6vG9lhzHcFhFDOy6w3dHK1LnN-R5xEE4DkcxuuVDAmq2jDpO3DHVxmyKgvw/exec';
 
     let appData = { dates: [], participants: [] };
 
