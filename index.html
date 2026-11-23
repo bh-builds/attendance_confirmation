@@ -68,16 +68,16 @@
       margin-bottom: 5px;
       color: var(--text);
     }
-    select, input {
+    select, input, textarea {
       padding: 8px 10px;
       border: 1px solid var(--border);
       border-radius: 6px;
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       font-family: inherit;
       background-color: #fff;
       width: 100%;
     }
-    select:focus, input:focus {
+    select:focus, input:focus, textarea:focus {
       outline: none;
       border-color: var(--primary);
     }
@@ -92,11 +92,11 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
     }
     th, td {
       text-align: left;
-      padding: 8px 6px;
+      padding: 8px 5px;
       border-bottom: 1px solid var(--border);
       white-space: nowrap;
     }
@@ -104,7 +104,7 @@
       background: #f1f5f9;
       font-weight: 600;
       color: var(--muted);
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       text-transform: uppercase;
     }
     tr:hover {
@@ -114,20 +114,128 @@
       display: inline-block;
       padding: 2px 6px;
       border-radius: 999px;
-      font-size: 0.68rem;
+      font-size: 0.66rem;
       font-weight: 600;
     }
     .badge-complete { background: #dcfce7; color: #166534; }
     .badge-warn { background: #fef3c7; color: #92400e; }
     .badge-absent { background: #fee2e2; color: #991b1b; }
     .badge-clarified { background: #dbeafe; color: #1e40af; }
+
+    .btn-clarify {
+      background: #f0fdfa;
+      color: var(--primary);
+      border: 1px solid #99f6e4;
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-clarify:hover {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    /* Modal Popup Styles */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal-card {
+      background: var(--card);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 393px;
+      padding: 18px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-header h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      line-height: 1;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0 4px;
+    }
+    .modal-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .btn-primary {
+      flex: 1;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 9px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 9px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    #toast {
+      display: none;
+      padding: 10px 12px;
+      background: #dcfce7;
+      color: #166534;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <div id="toast">Klarifikasi berhasil disimpan!</div>
+
     <div class="card">
       <h1>Rekap Kehadiran • HKN ke-62</h1>
-      <div class="subtitle">Pilih nama peserta untuk melihat rekap kehadiran per tanggal.</div>
+      <div class="subtitle">Pilih nama peserta untuk melihat rekap kehadiran dan mengajukan klarifikasi.</div>
 
       <div class="form-group">
         <label for="participantSelect">Participant Name</label>
@@ -153,12 +261,60 @@
               <th>Check-Out</th>
               <th>Duration</th>
               <th>Status</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody id="attendanceTableBody">
-            <tr><td colspan="5" style="text-align:center; color:#64748b;">Memuat data dari server...</td></tr>
+            <tr><td colspan="6" style="text-align:center; color:#64748b;">Memuat data dari server...</td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clarification Popup Modal -->
+  <div class="modal-overlay" id="clarificationModal" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Klarifikasi Kehadiran</h3>
+        <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+      </div>
+
+      <div class="modal-grid-2">
+        <div class="form-group" style="margin-bottom:0;">
+          <label for="modalDate">Date</label>
+          <input type="text" id="modalDate" readonly>
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label for="modalDuration">Duration</label>
+          <input type="text" id="modalDuration" readonly>
+        </div>
+      </div>
+
+      <div class="modal-grid-2">
+        <div class="form-group" style="margin-bottom:0;">
+          <label for="modalCheckIn">Check-In</label>
+          <input type="time" step="1" id="modalCheckIn" oninput="recalcModalDuration()">
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label for="modalCheckOut">Check-Out</label>
+          <input type="time" step="1" id="modalCheckOut" oninput="recalcModalDuration()">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="modalNotes">Remarks / Reason</label>
+        <textarea id="modalNotes" rows="2" placeholder="Contoh: Lupa checkout sesi sore / Dinas Luar / Sakit..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="modalEvidence">Evidence Link (Google Drive / URL)</label>
+        <input type="url" id="modalEvidence" placeholder="https://drive.google.com/...">
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" onclick="closeModal()">Batal</button>
+        <button type="button" class="btn-primary" id="modalSaveBtn" onclick="submitModalClarification()">Simpan Klarifikasi</button>
       </div>
     </div>
   </div>
@@ -187,7 +343,7 @@
       } catch (err) {
         document.getElementById('participantSelect').innerHTML = '<option value="">Gagal memuat</option>';
         document.getElementById('attendanceTableBody').innerHTML =
-          `<tr><td colspan="5" style="text-align:center; color:#991b1b; white-space:normal;">Gagal memuat data: ${err.message}</td></tr>`;
+          `<tr><td colspan="6" style="text-align:center; color:#991b1b; white-space:normal;">Gagal memuat data: ${err.message}</td></tr>`;
       }
     }
 
@@ -223,7 +379,7 @@
       const tbody = document.getElementById('attendanceTableBody');
       tbody.innerHTML = '';
 
-      person.records.forEach(rec => {
+      person.records.forEach((rec, recIdx) => {
         let badgeClass = 'badge-complete';
         if (rec.isClarified) badgeClass = 'badge-clarified';
         else if (rec.status.includes('Missing')) badgeClass = 'badge-warn';
@@ -236,9 +392,103 @@
           <td>${rec.checkOut}</td>
           <td>${rec.duration}</td>
           <td><span class="badge ${badgeClass}">${rec.status}</span></td>
+          <td><button type="button" class="btn-clarify" onclick="openClarifyModal(${recIdx})">Clarify</button></td>
         `;
         tbody.appendChild(tr);
       });
+    }
+
+    function openClarifyModal(recIdx) {
+      const pIdx = document.getElementById('participantSelect').value;
+      const person = appData.participants[pIdx];
+      if (!person) return;
+
+      const rec = person.records[recIdx];
+      document.getElementById('modalDate').value = rec.date;
+      document.getElementById('modalCheckIn').value =
+        (rec.checkIn && rec.checkIn !== '-' && rec.checkIn !== '00:00:00') ? rec.checkIn : '';
+      document.getElementById('modalCheckOut').value =
+        (rec.checkOut && rec.checkOut !== '-' && rec.checkOut !== '00:00:00') ? rec.checkOut : '';
+      document.getElementById('modalDuration').value = rec.duration || '0 jam 0 menit';
+      document.getElementById('modalNotes').value = rec.notes || '';
+      document.getElementById('modalEvidence').value = rec.evidenceLink || '';
+
+      document.getElementById('clarificationModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('clarificationModal').classList.remove('open');
+    }
+
+    function closeModalOnBackdrop(e) {
+      if (e.target.id === 'clarificationModal') {
+        closeModal();
+      }
+    }
+
+    function recalcModalDuration() {
+      const inVal = document.getElementById('modalCheckIn').value;
+      const outVal = document.getElementById('modalCheckOut').value;
+      if (!inVal || !outVal) {
+        document.getElementById('modalDuration').value = '0 jam 0 menit';
+        return;
+      }
+      const inParts = inVal.split(':').map(Number);
+      const outParts = outVal.split(':').map(Number);
+      const inMins = inParts[0] * 60 + inParts[1];
+      const outMins = outParts[0] * 60 + outParts[1];
+      const diff = outMins - inMins;
+
+      if (diff <= 0) {
+        document.getElementById('modalDuration').value = '0 jam 0 menit';
+      } else {
+        const hrs = Math.floor(diff / 60);
+        const mins = diff % 60;
+        document.getElementById('modalDuration').value = `${hrs} jam ${mins} menit`;
+      }
+    }
+
+    async function submitModalClarification() {
+      const pIdx = document.getElementById('participantSelect').value;
+      const person = appData.participants[pIdx];
+      if (!person) return;
+
+      const btn = document.getElementById('modalSaveBtn');
+      btn.disabled = true;
+      btn.textContent = 'Menyimpan...';
+
+      const payload = {
+        name: person.name,
+        nip: person.nip,
+        date: document.getElementById('modalDate').value,
+        status: 'Clarified',
+        checkIn: document.getElementById('modalCheckIn').value,
+        checkOut: document.getElementById('modalCheckOut').value,
+        notes: document.getElementById('modalNotes').value,
+        evidenceLink: document.getElementById('modalEvidence').value
+      };
+
+      try {
+        const res = await fetch(GAS_WEB_APP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        if (json.status !== 'success') throw new Error(json.message);
+
+        closeModal();
+        initApp(json.data);
+
+        const toast = document.getElementById('toast');
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 3000);
+      } catch (err) {
+        alert('Gagal menyimpan klarifikasi: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Simpan Klarifikasi';
+      }
     }
   </script>
 </body>
