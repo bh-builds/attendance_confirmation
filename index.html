@@ -623,14 +623,20 @@
       searchInput.disabled = false;
       searchInput.placeholder = 'Ketik nama atau NIP peserta...';
 
-      if (data.participants.length > 0) {
-        let targetIdx = 0;
-        if (previousSelectedName) {
-          const foundIdx = data.participants.findIndex(p => p.name === previousSelectedName);
-          if (foundIdx !== -1) targetIdx = foundIdx;
+      if (previousSelectedName) {
+        const foundIdx = data.participants.findIndex(p => p.name === previousSelectedName);
+        if (foundIdx !== -1) {
+          selectParticipant(foundIdx, false);
+          return;
         }
-        selectParticipant(targetIdx, false);
       }
+
+      selectedParticipantIdx = -1;
+      searchInput.value = '';
+      document.getElementById('nipDisplay').value = '';
+      toggleClearBtn();
+      document.getElementById('attendanceTableBody').innerHTML =
+        `<tr><td colspan="6" style="text-align:center; color:#526d6a; white-space:normal; padding:16px;">Silakan cari dan pilih nama peserta untuk menampilkan riwayat kehadiran.</td></tr>`;
     }
 
     function openDropdown() {
@@ -643,8 +649,10 @@
       document.getElementById('participantDropdown').classList.remove('open');
       if (selectedParticipantIdx >= 0 && appData.participants[selectedParticipantIdx]) {
         document.getElementById('participantSearch').value = appData.participants[selectedParticipantIdx].name;
-        toggleClearBtn();
+      } else {
+        document.getElementById('participantSearch').value = '';
       }
+      toggleClearBtn();
     }
 
     function filterParticipants() {
@@ -656,8 +664,12 @@
 
     function clearSearch() {
       const input = document.getElementById('participantSearch');
+      selectedParticipantIdx = -1;
       input.value = '';
+      document.getElementById('nipDisplay').value = '';
       toggleClearBtn();
+      document.getElementById('attendanceTableBody').innerHTML =
+        `<tr><td colspan="6" style="text-align:center; color:#526d6a; white-space:normal; padding:16px;">Silakan cari dan pilih nama peserta untuk menampilkan riwayat kehadiran.</td></tr>`;
       renderDropdownOptions('');
       document.getElementById('participantDropdown').classList.add('open');
       input.focus();
