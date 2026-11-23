@@ -294,7 +294,6 @@
       color: #78350F;
       border: 1px solid #F59E0B;
     }
-    }
     .badge-warn {
       background: #fff8e1;
       color: #8d5b00;
@@ -732,11 +731,12 @@
       return null;
     }
 
-    function formatStatusLabel(rec) {
+    function formatStatusLabel(rec, isUnderSixHours) {
       if (rec.isClarified) return 'Terklarifikasi';
+      if (rec.status.includes('Absent')) return 'Tidak Hadir';
+      if (isUnderSixHours) return 'Kurang';
       if (rec.status.includes('Missing Check-Out')) return 'Belum Absen Pulang';
       if (rec.status.includes('Missing Check-In')) return 'Belum Absen Datang';
-      if (rec.status.includes('Absent')) return 'Tidak Hadir';
       if (rec.status === 'Complete') return 'Lengkap';
       return rec.status;
     }
@@ -760,7 +760,7 @@
           badgeClass = 'badge-warn';
         }
 
-        const statusText = formatStatusLabel(rec);
+        const statusText = formatStatusLabel(rec, isUnderSixHours);
 
         const tr = document.createElement('tr');
         tr.innerHTML = `
