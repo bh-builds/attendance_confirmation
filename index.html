@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Klarifikasi Kehadiran • HKN ke-62</title>
+  <title>Rekap & Klarifikasi Kehadiran • HKN ke-62</title>
   <style>
     :root {
       --primary: #0f766e;
@@ -22,51 +22,60 @@
       background-color: var(--bg);
       color: var(--text);
       margin: 0;
-      padding: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .container {
-      max-width: 960px;
-      margin: 0 auto;
+      width: 100%;
+      max-width: 425px;
     }
     .card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 20px 24px;
-      margin-bottom: 20px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      width: 100%;
     }
     h1 {
-      font-size: 1.35rem;
+      font-size: 1.15rem;
       margin: 0 0 4px 0;
+    }
+    h2 {
+      font-size: 0.95rem;
+      margin: 0 0 8px 0;
     }
     .subtitle {
       color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: 20px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
+      font-size: 0.8rem;
+      margin-bottom: 14px;
+      line-height: 1.4;
     }
     .form-group {
       display: flex;
       flex-direction: column;
+      margin-bottom: 12px;
+    }
+    .form-group:last-child {
+      margin-bottom: 0;
     }
     label {
-      font-size: 0.82rem;
+      font-size: 0.78rem;
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       color: var(--text);
     }
     select, input {
-      padding: 9px 12px;
+      padding: 8px 10px;
       border: 1px solid var(--border);
       border-radius: 6px;
-      font-size: 0.92rem;
+      font-size: 0.86rem;
       font-family: inherit;
       background-color: #fff;
+      width: 100%;
     }
     select:focus, input:focus {
       outline: none;
@@ -76,31 +85,18 @@
       background-color: #f1f5f9;
       color: var(--muted);
     }
-    .btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 6px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 16px;
-      font-size: 0.92rem;
-    }
-    .btn:hover { background: var(--primary-hover); }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
     .table-wrap {
       overflow-x: auto;
+      margin-top: 6px;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 12px;
-      font-size: 0.9rem;
+      font-size: 0.78rem;
     }
     th, td {
       text-align: left;
-      padding: 11px 12px;
+      padding: 8px 6px;
       border-bottom: 1px solid var(--border);
       white-space: nowrap;
     }
@@ -108,99 +104,46 @@
       background: #f1f5f9;
       font-weight: 600;
       color: var(--muted);
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
     }
-    tr:hover { background-color: #f8fafc; }
+    tr:hover {
+      background-color: #f8fafc;
+    }
     .badge {
       display: inline-block;
-      padding: 3px 8px;
+      padding: 2px 6px;
       border-radius: 999px;
-      font-size: 0.75rem;
+      font-size: 0.68rem;
       font-weight: 600;
     }
     .badge-complete { background: #dcfce7; color: #166534; }
     .badge-warn { background: #fef3c7; color: #92400e; }
     .badge-absent { background: #fee2e2; color: #991b1b; }
     .badge-clarified { background: #dbeafe; color: #1e40af; }
-    .row-action {
-      color: var(--primary);
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.82rem;
-      text-decoration: underline;
-    }
-    #toast {
-      display: none;
-      padding: 10px 14px;
-      background: #dcfce7;
-      color: #166534;
-      border-radius: 6px;
-      margin-top: 12px;
-      font-size: 0.88rem;
-      font-weight: 500;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="card">
-      <h1>Klarifikasi Kehadiran • HKN ke-62</h1>
-      <div class="subtitle">Pilih nama peserta untuk melihat rekap kehadiran dan mengajukan klarifikasi ketidakhadiran atau jam datang/pulang.</div>
+      <h1>Rekap Kehadiran • HKN ke-62</h1>
+      <div class="subtitle">Pilih nama peserta untuk melihat rekap kehadiran per tanggal.</div>
 
-      <div class="grid">
-        <div class="form-group">
-          <label for="participantSelect">Participant Name</label>
-          <select id="participantSelect" onchange="onParticipantChange()">
-            <option value="">Memuat data peserta...</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="nipDisplay">NIP</label>
-          <input type="text" id="nipDisplay" readonly placeholder="-">
-        </div>
-
-        <div class="form-group">
-          <label for="dateSelect">Date</label>
-          <select id="dateSelect" onchange="onDateChange()"></select>
-        </div>
+      <div class="form-group">
+        <label for="participantSelect">Participant Name</label>
+        <select id="participantSelect" onchange="onParticipantChange()">
+          <option value="">Memuat data peserta...</option>
+        </select>
       </div>
 
-      <div class="grid" style="margin-top: 16px;">
-        <div class="form-group">
-          <label for="statusSelect">Clarification Type / Status</label>
-          <select id="statusSelect">
-            <option value="Clarified Check-In/Out">Clarified Check-In / Check-Out</option>
-            <option value="Dinas Luar (DL)">Dinas Luar (DL)</option>
-            <option value="Sakit">Sakit</option>
-            <option value="Izin / Cuti">Izin / Cuti</option>
-            <option value="Lupa Absen">Lupa Absen</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="checkInInput">Check-In Time (HH:MM:SS)</label>
-          <input type="time" step="1" id="checkInInput">
-        </div>
-
-        <div class="form-group">
-          <label for="checkOutInput">Check-Out Time (HH:MM:SS)</label>
-          <input type="time" step="1" id="checkOutInput">
-        </div>
+      <div class="form-group">
+        <label for="nipDisplay">NIP</label>
+        <input type="text" id="nipDisplay" readonly placeholder="-">
       </div>
-
-      <div class="form-group" style="margin-top: 16px;">
-        <label for="notesInput">Remarks / Reason</label>
-        <input type="text" id="notesInput" placeholder="Contoh: Lupa checkout sesi sore, atau Nomor Surat Tugas...">
-      </div>
-
-      <button class="btn" id="submitBtn" onclick="saveClarification()">Save Clarification</button>
-      <div id="toast">Klarifikasi berhasil disimpan!</div>
     </div>
 
     <div class="card">
-      <h2 style="font-size: 1.1rem; margin: 0 0 8px 0;">Rekap Kehadiran per Tanggal</h2>
+      <h2>Rekap Kehadiran per Tanggal</h2>
       <div class="table-wrap">
         <table>
           <thead>
@@ -210,12 +153,10 @@
               <th>Check-Out</th>
               <th>Duration</th>
               <th>Status</th>
-              <th>Notes</th>
-              <th>Action</th>
             </tr>
           </thead>
           <tbody id="attendanceTableBody">
-            <tr><td colspan="7" style="text-align:center; color:#64748b;">Memuat data dari server...</td></tr>
+            <tr><td colspan="5" style="text-align:center; color:#64748b;">Memuat data dari server...</td></tr>
           </tbody>
         </table>
       </div>
@@ -231,20 +172,28 @@
 
     async function loadAttendanceData() {
       try {
-        const res = await fetch(GAS_WEB_APP_URL);
-        const json = await res.json();
+        const res = await fetch(GAS_WEB_APP_URL, { redirect: 'follow' });
+        const rawText = await res.text();
+
+        let json;
+        try {
+          json = JSON.parse(rawText);
+        } catch (parseErr) {
+          throw new Error('Response bukan JSON (pastikan akses Apps Script = "Anyone" & deploy versi baru).');
+        }
+
         if (json.status !== 'success') throw new Error(json.message);
         initApp(json.data);
       } catch (err) {
+        document.getElementById('participantSelect').innerHTML = '<option value="">Gagal memuat</option>';
         document.getElementById('attendanceTableBody').innerHTML =
-          `<tr><td colspan="7" style="text-align:center; color:#991b1b;">Gagal memuat data: ${err.message}</td></tr>`;
+          `<tr><td colspan="5" style="text-align:center; color:#991b1b; white-space:normal;">Gagal memuat data: ${err.message}</td></tr>`;
       }
     }
 
     function initApp(data) {
       appData = data;
       const pSelect = document.getElementById('participantSelect');
-      const dSelect = document.getElementById('dateSelect');
       const previousSelectedName = pSelect.options[pSelect.selectedIndex]?.textContent;
 
       pSelect.innerHTML = '';
@@ -254,14 +203,6 @@
         opt.textContent = p.name;
         if (p.name === previousSelectedName) opt.selected = true;
         pSelect.appendChild(opt);
-      });
-
-      dSelect.innerHTML = '';
-      data.dates.forEach(d => {
-        const opt = document.createElement('option');
-        opt.value = d;
-        opt.textContent = d;
-        dSelect.appendChild(opt);
       });
 
       if (data.participants.length > 0) {
@@ -276,29 +217,6 @@
 
       document.getElementById('nipDisplay').value = person.nip;
       renderTable(person);
-      onDateChange();
-    }
-
-    function onDateChange() {
-      const idx = document.getElementById('participantSelect').value;
-      const selectedDate = document.getElementById('dateSelect').value;
-      const person = appData.participants[idx];
-      if (!person) return;
-
-      const rec = person.records.find(r => r.date === selectedDate);
-      if (!rec) return;
-
-      document.getElementById('checkInInput').value =
-        (rec.checkIn && rec.checkIn !== '-' && rec.checkIn !== '00:00:00') ? rec.checkIn : '';
-      document.getElementById('checkOutInput').value =
-        (rec.checkOut && rec.checkOut !== '-' && rec.checkOut !== '00:00:00') ? rec.checkOut : '';
-      document.getElementById('notesInput').value = rec.notes || '';
-    }
-
-    function selectRowForEdit(dateStr) {
-      document.getElementById('dateSelect').value = dateStr;
-      onDateChange();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function renderTable(person) {
@@ -318,51 +236,9 @@
           <td>${rec.checkOut}</td>
           <td>${rec.duration}</td>
           <td><span class="badge ${badgeClass}">${rec.status}</span></td>
-          <td>${rec.notes || '-'}</td>
-          <td><span class="row-action" onclick="selectRowForEdit('${rec.date}')">Clarify</span></td>
         `;
         tbody.appendChild(tr);
       });
-    }
-
-    async function saveClarification() {
-      const idx = document.getElementById('participantSelect').value;
-      const person = appData.participants[idx];
-      if (!person) return;
-
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      btn.textContent = 'Saving...';
-
-      const payload = {
-        name: person.name,
-        nip: person.nip,
-        date: document.getElementById('dateSelect').value,
-        status: document.getElementById('statusSelect').value,
-        checkIn: document.getElementById('checkInInput').value,
-        checkOut: document.getElementById('checkOutInput').value,
-        notes: document.getElementById('notesInput').value
-      };
-
-      try {
-        const res = await fetch(GAS_WEB_APP_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
-        });
-        const json = await res.json();
-        if (json.status !== 'success') throw new Error(json.message);
-
-        initApp(json.data);
-        const toast = document.getElementById('toast');
-        toast.style.display = 'block';
-        setTimeout(() => { toast.style.display = 'none'; }, 3000);
-      } catch (err) {
-        alert('Gagal menyimpan klarifikasi: ' + err.message);
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Save Clarification';
-      }
     }
   </script>
 </body>
