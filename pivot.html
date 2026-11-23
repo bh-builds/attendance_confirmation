@@ -1,1 +1,912 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rekapitulasi Kehadiran HKN ke-62 • Kementerian Kesehatan RI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Roboto+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="256x256" href="./favicon.png">
+  <style>
+    :root {
+      --kemenkes-teal: #00796b;
+      --kemenkes-teal-dark: #004d40;
+      --kemenkes-tosca: #009688;
+      --kemenkes-lime: #8bc34a;
+      --kemenkes-soft: #e0f2f1;
+      --kemenkes-mint: #f2f8f7;
+      --surface: #ffffff;
+      --border: #d5e5e3;
+      --border-strong: #b2dfdb;
+      --text: #102a27;
+      --muted: #526d6a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(180deg, #e4f3f1 0%, var(--kemenkes-mint) 30%, #f8fbfa 100%);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .page-wrapper {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* Header Banner */
+    .hero-header {
+      background: linear-gradient(135deg, var(--kemenkes-teal-dark) 0%, var(--kemenkes-teal) 55%, var(--kemenkes-tosca) 100%);
+      color: #ffffff;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 24px rgba(0, 91, 79, 0.18);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hero-header::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--kemenkes-lime) 0%, #cddc39 100%);
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .brand-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--kemenkes-lime);
+      box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.35);
+    }
+
+    .hero-title h1 {
+      margin: 0 0 4px 0;
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-title p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 12px;
+      padding: 10px 16px;
+      min-width: 125px;
+      backdrop-filter: blur(4px);
+    }
+
+    .stat-pill .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.85);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .stat-pill .stat-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Controls Bar */
+    .controls-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 10px rgba(0, 91, 79, 0.05);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+      max-width: 360px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 9px 34px 9px 34px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 0.84rem;
+      color: var(--text);
+      background: #fbfdfc;
+      transition: all 0.15s ease;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--kemenkes-tosca);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.14);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--kemenkes-tosca);
+      font-size: 0.85rem;
+      pointer-events: none;
+    }
+
+    .clear-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--kemenkes-soft);
+      color: var(--kemenkes-teal-dark);
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 0.9rem;
+      line-height: 1;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .filter-select {
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 0.84rem;
+      color: var(--text);
+      background: #fbfdfc;
+      cursor: pointer;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--kemenkes-tosca);
+    }
+
+    .action-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 9px 14px;
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn:hover {
+      background: var(--kemenkes-mint);
+      border-color: var(--kemenkes-tosca);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--kemenkes-teal) 0%, var(--kemenkes-tosca) 100%);
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 2px 8px rgba(0, 121, 107, 0.22);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--kemenkes-teal-dark) 0%, var(--kemenkes-teal) 100%);
+    }
+
+    /* Legend */
+    .legend-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+      padding: 0 4px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Pivot Table Container */
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0, 91, 79, 0.06);
+      overflow: hidden;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      max-height: 72vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-family: "Roboto Condensed", "Arial Narrow", sans-serif;
+      font-size: 0.8rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    /* Row 1: Date Group Headers */
+    thead tr.date-group-row th {
+      background: var(--kemenkes-teal-dark);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.78rem;
+      padding: 9px 10px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+      border-right: 1px solid rgba(255, 255, 255, 0.22);
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+
+    thead tr.date-group-row th.identity-group {
+      background: #003d33;
+      text-align: left;
+      padding-left: 14px;
+    }
+
+    /* Row 2: Sub-headers (Datang, Pulang, Durasi) */
+    thead tr.sub-header-row th {
+      background: var(--kemenkes-soft);
+      color: var(--kemenkes-teal-dark);
+      font-weight: 700;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 8px 8px;
+      border-bottom: 2px solid var(--border-strong);
+      border-right: 1px solid #cce3e0;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    thead tr.sub-header-row th.col-left {
+      text-align: left;
+    }
+
+    /* Sticky Left Columns (No, Nama, NIP) */
+    .sticky-col-1 {
+      position: sticky;
+      left: 0;
+      z-index: 10;
+      min-width: 40px;
+      max-width: 40px;
+      text-align: center !important;
+    }
+
+    .sticky-col-2 {
+      position: sticky;
+      left: 40px;
+      z-index: 10;
+      min-width: 190px;
+      max-width: 220px;
+      text-align: left !important;
+    }
+
+    .sticky-col-3 {
+      position: sticky;
+      left: 230px;
+      z-index: 10;
+      min-width: 138px;
+      max-width: 138px;
+      text-align: left !important;
+      border-right: 2px solid var(--border-strong) !important;
+    }
+
+    thead tr.date-group-row th.sticky-col-1,
+    thead tr.date-group-row th.sticky-col-2,
+    thead tr.date-group-row th.sticky-col-3 {
+      z-index: 30;
+    }
+
+    thead tr.sub-header-row th.sticky-col-1,
+    thead tr.sub-header-row th.sticky-col-2,
+    thead tr.sub-header-row th.sticky-col-3 {
+      z-index: 30;
+      background: #d2ece9;
+    }
+
+    tbody td {
+      padding: 8px 8px;
+      border-bottom: 1px solid #edf5f4;
+      border-right: 1px solid #f0f6f5;
+      white-space: nowrap;
+      background: #ffffff;
+      text-align: center;
+    }
+
+    tbody tr:nth-child(even) td {
+      background: #fafdfc;
+    }
+
+    tbody tr:hover td {
+      background: #eef8f6;
+    }
+
+    tbody td.col-name {
+      font-weight: 700;
+      color: var(--text);
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    tbody td.col-nip {
+      color: var(--muted);
+      font-size: 0.76rem;
+    }
+
+    td.group-divider, th.group-divider {
+      border-right: 2px solid var(--border-strong) !important;
+    }
+
+    .empty-dash {
+      color: #b0c4c2;
+    }
+
+    /* Duration & Status Pills */
+    .dur-pill {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .dur-ok {
+      background: #e8f5e9;
+      color: #1b5e20;
+      border: 1px solid #c8e6c9;
+    }
+
+    .dur-short {
+      background: #FEF3C7;
+      color: #78350F;
+      border: 1px solid #FDE68A;
+    }
+
+    .dur-zero {
+      background: #ffebee;
+      color: #b71c1c;
+      border: 1px solid #ffcdd2;
+    }
+
+    .dur-clarified {
+      background: #e0f2f1;
+      color: #005b4f;
+      border: 1px solid #80cbc4;
+    }
+
+    .state-message {
+      text-align: center;
+      padding: 36px 16px;
+      color: var(--muted);
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 0.88rem;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.74rem;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 12px;
+      }
+      .sticky-col-2 {
+        min-width: 145px;
+        max-width: 155px;
+      }
+      .sticky-col-3 {
+        position: static;
+        border-right: 1px solid #edf5f4 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <!-- Hero Header -->
+    <div class="hero-header">
+      <div class="hero-title">
+        <div class="brand-badge">
+          <span class="brand-dot"></span>
+          <span>Kementerian Kesehatan RI • HKN ke-62</span>
+        </div>
+        <h1>Matriks Rekapitulasi Kehadiran (PivotTable)</h1>
+        <p>Tampilan lengkap jam datang, jam pulang, dan total durasi kehadiran peserta per tanggal kegiatan.</p>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-pill">
+          <span class="stat-label">Total Peserta</span>
+          <span class="stat-value" id="statParticipants">-</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">Hari Kegiatan</span>
+          <span class="stat-value" id="statDates">-</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter & Search Controls -->
+    <div class="controls-card">
+      <div class="search-group">
+        <div class="search-box">
+          <span class="search-icon">&#128269;</span>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Cari nama peserta atau NIP..."
+            oninput="applyFilters()"
+          >
+          <button type="button" id="clearSearchBtn" class="clear-btn" onclick="clearSearch()" aria-label="Hapus pencarian">&times;</button>
+        </div>
+
+        <select id="statusFilter" class="filter-select" onchange="applyFilters()">
+          <option value="ALL">Semua Peserta</option>
+          <option value="HAS_SHORT">Memiliki Durasi Kurang (&lt; 6 Jam)</option>
+          <option value="HAS_CLARIFIED">Sudah Terklarifikasi</option>
+          <option value="COMPLETE_ONLY">Semua Kehadiran Lengkap (&ge; 6 Jam)</option>
+        </select>
+      </div>
+
+      <div class="action-group">
+        <button type="button" class="btn" onclick="loadPivotData()">&#8635; Muat Ulang</button>
+        <button type="button" class="btn btn-primary" onclick="exportFilteredCSV()">&#11015; Unduh CSV</button>
+      </div>
+    </div>
+
+    <!-- Color Legend -->
+    <div class="legend-bar">
+      <strong>Keterangan Durasi:</strong>
+      <span class="legend-item"><span class="dur-pill dur-ok">&ge; 6 Jam</span> Memenuhi</span>
+      <span class="legend-item"><span class="dur-pill dur-short">&lt; 6 Jam</span> Kurang</span>
+      <span class="legend-item"><span class="dur-pill dur-zero">0 jam 0 menit</span> Belum Absen Pulang</span>
+      <span class="legend-item"><span class="dur-pill dur-clarified">Terklarifikasi</span> Sudah Diklarifikasi</span>
+    </div>
+
+    <!-- Pivot Table -->
+    <div class="table-card">
+      <div class="table-scroll">
+        <table id="pivotTable">
+          <thead id="pivotTableHead">
+            <tr class="date-group-row">
+              <th class="identity-group">Memuat struktur tabel...</th>
+            </tr>
+          </thead>
+          <tbody id="pivotTableBody">
+            <tr>
+              <td class="state-message">Sedang mengambil data dari sheet <strong>PivotTable</strong>...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="footer-note">Sumber Data: DaftarHadirHKN62 (Sheet PivotTable) • Kementerian Kesehatan RI</div>
+  </div>
+
+  <script>
+    // Apps Script Web App endpoint connected to spreadsheet 1FfbhZIa7wJIHpTjfB4domAnzf7boYX7FiFpu1fgbcsA (PivotTable)
+    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzM80HcT9z6vG9lhzHcFhFDOy6w3dHK1LnN-R5xEE4DkcxuuVDAmq2jDpO3DHVxmyKgvw/exec';
+    // Direct Google Visualization JSON fallback (works automatically if sheet sharing is "Anyone with link")
+    const SPREADSHEET_ID = '1FfbhZIa7wJIHpTjfB4domAnzf7boYX7FiFpu1fgbcsA';
+    const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=PivotTable`;
+
+    let pivotData = { dates: [], participants: [] };
+    let filteredParticipants = [];
+
+    window.addEventListener('DOMContentLoaded', loadPivotData);
+
+    async function loadPivotData() {
+      const tbody = document.getElementById('pivotTableBody');
+      tbody.innerHTML = `<tr><td colspan="18" class="state-message">Sedang memuat data dari sheet <strong>PivotTable</strong>...</td></tr>`;
+
+      try {
+        // 1. Primary fetch via deployed Apps Script backend
+        const res = await fetch(GAS_WEB_APP_URL, { redirect: 'follow' });
+        const text = await res.text();
+        const json = JSON.parse(text);
+        if (json.status === 'success' && json.data && json.data.participants) {
+          pivotData = json.data;
+          renderPivotApp();
+          return;
+        }
+        throw new Error(json.message || 'Format respons Apps Script tidak valid');
+      } catch (primaryErr) {
+        // 2. Fallback: parse directly from Google Sheets gviz PivotTable endpoint
+        try {
+          const gvizRes = await fetch(GVIZ_URL);
+          const gvizText = await gvizRes.text();
+          const parsed = parseGvizPivotTable(gvizText);
+          pivotData = parsed;
+          renderPivotApp();
+        } catch (fallbackErr) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="18" class="state-message" style="color:#b71c1c;">
+                Gagal memuat data PivotTable: ${primaryErr.message}
+              </td>
+            </tr>`;
+        }
+      }
+    }
+
+    function parseGvizPivotTable(rawText) {
+      const jsonStr = rawText.replace(/^[^(]+\(/, '').replace(/\);?\s*$/, '');
+      const obj = JSON.parse(jsonStr);
+      const rows = obj.table.rows || [];
+
+      // Locate header rows in PivotTable (Dates row and Nama/NIP/Datang/Pulang/Durasi row)
+      let dateRowIdx = -1;
+      let subHeaderRowIdx = -1;
+      for (let i = 0; i < Math.min(rows.length, 8); i++) {
+        const vals = (rows[i].c || []).map(cell => (cell && (cell.f || cell.v) ? String(cell.f || cell.v).trim() : ''));
+        if (vals[0] === 'Nama' && vals[1] === 'NIP') {
+          subHeaderRowIdx = i;
+          dateRowIdx = i - 1;
+          break;
+        }
+      }
+
+      if (subHeaderRowIdx === -1) {
+        throw new Error('Header kolom Nama / NIP tidak ditemukan pada sheet PivotTable.');
+      }
+
+      const dateCells = rows[dateRowIdx]?.c || [];
+      const dates = [];
+      const dateColStarts = [];
+
+      for (let c = 2; c < dateCells.length; c += 3) {
+        const rawDate = dateCells[c] ? (dateCells[c].f || dateCells[c].v) : '';
+        if (rawDate) {
+          dates.push(String(rawDate).trim());
+          dateColStarts.push(c);
+        }
+      }
+
+      const participants = [];
+      for (let r = subHeaderRowIdx + 1; r < rows.length; r++) {
+        const cells = rows[r].c || [];
+        const name = cells[0] && (cells[0].f || cells[0].v) ? String(cells[0].f || cells[0].v).trim() : '';
+        const nip = cells[1] && (cells[1].f || cells[1].v) ? String(cells[1].f || cells[1].v).trim() : '-';
+        if (!name || name.toLowerCase().includes('grand total')) continue;
+
+        const records = dateColStarts.map((startCol, idx) => {
+          const checkIn = getCellStr(cells[startCol]) || '-';
+          const checkOut = getCellStr(cells[startCol + 1]) || '-';
+          const duration = getCellStr(cells[startCol + 2]) || '-';
+          let status = 'Complete';
+          if (checkIn === '-' && checkOut === '-') status = 'Absent';
+          else if (checkOut === '00:00:00' || checkOut === '-') status = 'Missing Check-Out';
+          return {
+            date: dates[idx],
+            checkIn,
+            checkOut,
+            duration,
+            status,
+            isClarified: false
+          };
+        });
+
+        participants.push({ name, nip, records });
+      }
+
+      return { dates, participants };
+    }
+
+    function getCellStr(cell) {
+      if (!cell) return '';
+      const val = cell.f !== undefined && cell.f !== null ? cell.f : cell.v;
+      return val !== undefined && val !== null ? String(val).trim() : '';
+    }
+
+    function formatTime24(raw) {
+      if (!raw || raw === '-') return '-';
+      const str = String(raw).trim();
+      if (str === '00:00:00') return '00:00:00';
+
+      const match = str.match(/^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?\s*(AM|PM)?$/i);
+      if (match) {
+        let hrs = parseInt(match[1], 10);
+        const mins = parseInt(match[2], 10);
+        const secs = match[3] !== undefined ? parseInt(match[3], 10) : 0;
+        const period = match[4] ? match[4].toUpperCase() : null;
+
+        if (period === 'PM' && hrs < 12) hrs += 12;
+        if (period === 'AM' && hrs === 12) hrs = 0;
+
+        if (hrs >= 0 && hrs <= 23 && mins >= 0 && mins <= 59 && secs >= 0 && secs <= 59) {
+          return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+      }
+      return str;
+    }
+
+    function parseDurationMinutes(durationStr) {
+      if (!durationStr || durationStr === '-') return null;
+      const str = String(durationStr).trim().toLowerCase();
+      const jamMatch = str.match(/(\d+)\s*jam/);
+      const menitMatch = str.match(/(\d+)\s*menit/);
+      if (jamMatch || menitMatch) {
+        const hrs = jamMatch ? parseInt(jamMatch[1], 10) : 0;
+        const mins = menitMatch ? parseInt(menitMatch[1], 10) : 0;
+        return hrs * 60 + mins;
+      }
+      return null;
+    }
+
+    function renderPivotApp() {
+      document.getElementById('statParticipants').textContent = pivotData.participants.length;
+      document.getElementById('statDates').textContent = pivotData.dates.length;
+      buildTableHeaders();
+      applyFilters();
+    }
+
+    function buildTableHeaders() {
+      const thead = document.getElementById('pivotTableHead');
+      const dates = pivotData.dates;
+
+      let groupRowHtml = `
+        <tr class="date-group-row">
+          <th class="identity-group sticky-col-1" rowspan="2">No</th>
+          <th class="identity-group sticky-col-2" rowspan="2">Nama Peserta</th>
+          <th class="identity-group sticky-col-3" rowspan="2">NIP</th>
+      `;
+
+      dates.forEach(date => {
+        groupRowHtml += `<th colspan="3" class="group-divider">${date}</th>`;
+      });
+      groupRowHtml += `</tr>`;
+
+      let subRowHtml = `<tr class="sub-header-row">`;
+      dates.forEach(() => {
+        subRowHtml += `
+          <th>Datang</th>
+          <th>Pulang</th>
+          <th class="group-divider">Durasi</th>
+        `;
+      });
+      subRowHtml += `</tr>`;
+
+      thead.innerHTML = groupRowHtml + subRowHtml;
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('searchInput');
+      input.value = '';
+      applyFilters();
+      input.focus();
+    }
+
+    function applyFilters() {
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      const statusFilter = document.getElementById('statusFilter').value;
+      document.getElementById('clearSearchBtn').style.display = query ? 'flex' : 'none';
+
+      filteredParticipants = pivotData.participants.filter(person => {
+        const matchesText =
+          !query ||
+          person.name.toLowerCase().includes(query) ||
+          (person.nip && person.nip.toLowerCase().includes(query));
+
+        if (!matchesText) return false;
+        if (statusFilter === 'ALL') return true;
+
+        const activeRecs = person.records.filter(r => r.duration && r.duration !== '-');
+        if (statusFilter === 'HAS_SHORT') {
+          return activeRecs.some(r => {
+            const mins = parseDurationMinutes(r.duration);
+            return mins !== null && mins < 360 && !r.isClarified;
+          });
+        }
+        if (statusFilter === 'HAS_CLARIFIED') {
+          return person.records.some(r => r.isClarified);
+        }
+        if (statusFilter === 'COMPLETE_ONLY') {
+          return activeRecs.length > 0 && activeRecs.every(r => {
+            const mins = parseDurationMinutes(r.duration);
+            return r.isClarified || (mins !== null && mins >= 360);
+          });
+        }
+        return true;
+      });
+
+      renderTableBody();
+    }
+
+    function renderTableBody() {
+      const tbody = document.getElementById('pivotTableBody');
+      const totalCols = 3 + pivotData.dates.length * 3;
+
+      if (filteredParticipants.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="${totalCols}" class="state-message">Tidak ada data peserta yang sesuai dengan filter pencarian.</td></tr>`;
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+
+      filteredParticipants.forEach((person, idx) => {
+        const tr = document.createElement('tr');
+        let rowHtml = `
+          <td class="sticky-col-1">${idx + 1}</td>
+          <td class="sticky-col-2 col-name" title="${person.name}">${person.name}</td>
+          <td class="sticky-col-3 col-nip">${person.nip || '-'}</td>
+        `;
+
+        pivotData.dates.forEach((date, dIdx) => {
+          const rec = person.records[dIdx] || { checkIn: '-', checkOut: '-', duration: '-', isClarified: false };
+          const in24 = formatTime24(rec.checkIn);
+          const out24 = formatTime24(rec.checkOut);
+          const dur = rec.duration || '-';
+
+          const inHtml = in24 === '-' ? `<span class="empty-dash">-</span>` : in24;
+          const outHtml = out24 === '-' ? `<span class="empty-dash">-</span>` : out24;
+
+          let durHtml = `<span class="empty-dash">-</span>`;
+          if (dur !== '-') {
+            const mins = parseDurationMinutes(dur);
+            let pillClass = 'dur-ok';
+            if (rec.isClarified) {
+              pillClass = 'dur-clarified';
+            } else if (mins === 0) {
+              pillClass = 'dur-zero';
+            } else if (mins !== null && mins < 360) {
+              pillClass = 'dur-short';
+            }
+            const label = rec.isClarified ? `${dur} ✓` : dur;
+            durHtml = `<span class="dur-pill ${pillClass}">${label}</span>`;
+          }
+
+          rowHtml += `
+            <td>${inHtml}</td>
+            <td>${outHtml}</td>
+            <td class="group-divider">${durHtml}</td>
+          `;
+        });
+
+        tr.innerHTML = rowHtml;
+        fragment.appendChild(tr);
+      });
+
+      tbody.innerHTML = '';
+      tbody.appendChild(fragment);
+    }
+
+    function exportFilteredCSV() {
+      if (!filteredParticipants.length) return;
+
+      const headers = ['No', 'Nama', 'NIP'];
+      pivotData.dates.forEach(date => {
+        headers.push(`${date} - Datang`, `${date} - Pulang`, `${date} - Durasi`);
+      });
+
+      const csvRows = [headers.map(escapeCsv).join(',')];
+
+      filteredParticipants.forEach((person, idx) => {
+        const row = [idx + 1, person.name, `="${person.nip || ''}"`];
+        pivotData.dates.forEach((_, dIdx) => {
+          const rec = person.records[dIdx] || {};
+          row.push(
+            formatTime24(rec.checkIn),
+            formatTime24(rec.checkOut),
+            rec.duration || '-'
+          );
+        });
+        csvRows.push(row.map(escapeCsv).join(','));
+      });
+
+      const blob = new Blob(['\uFEFF' + csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Rekap_PivotTable_HKN62.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function escapeCsv(val) {
+      const str = String(val ?? '');
+      if (str.startsWith('="')) return str;
+      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+        return `"${str.replace(/"/g, '""')}"`;
+      }
+      return str;
+    }
+  </script>
+</body>
+</html>
 
