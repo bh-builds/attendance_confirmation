@@ -854,7 +854,7 @@
       if (isUnderSixHours) return 'Kurang';
       if (rec.status.includes('Missing Check-Out')) return 'Belum Absen Pulang';
       if (rec.status.includes('Missing Check-In')) return 'Belum Absen Datang';
-      if (rec.status === 'Complete') return 'Lengkap';
+      if (rec.status === 'Complete') return 'Hadir';
       return rec.status;
     }
 
