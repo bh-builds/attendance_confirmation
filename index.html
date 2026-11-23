@@ -137,7 +137,7 @@
       color: #ffffff;
     }
 
-    /* Modal Popup Styles */
+    /* Gaya Popup Modal */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -231,16 +231,16 @@
 </head>
 <body>
   <div class="container">
-    <div id="toast">Klarifikasi berhasil disimpan!</div>
+    <div id="toast">Klarifikasi kehadiran berhasil disimpan!</div>
 
     <div class="card">
       <h1>Rekap Kehadiran • HKN ke-62</h1>
-      <div class="subtitle">Pilih nama peserta untuk melihat rekap kehadiran dan mengajukan klarifikasi.</div>
+      <div class="subtitle">Silakan pilih nama Anda untuk mengecek rekap kehadiran atau mengajukan klarifikasi.</div>
 
       <div class="form-group">
-        <label for="participantSelect">Participant Name</label>
+        <label for="participantSelect">Nama Peserta</label>
         <select id="participantSelect" onchange="onParticipantChange()">
-          <option value="">Memuat data peserta...</option>
+          <option value="">Memuat daftar peserta...</option>
         </select>
       </div>
 
@@ -251,64 +251,64 @@
     </div>
 
     <div class="card">
-      <h2>Rekap Kehadiran per Tanggal</h2>
+      <h2>Riwayat Kehadiran per Tanggal</h2>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Check-In</th>
-              <th>Check-Out</th>
-              <th>Duration</th>
+              <th>Tanggal</th>
+              <th>Datang</th>
+              <th>Pulang</th>
+              <th>Durasi</th>
               <th>Status</th>
-              <th>Action</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody id="attendanceTableBody">
-            <tr><td colspan="6" style="text-align:center; color:#64748b;">Memuat data dari server...</td></tr>
+            <tr><td colspan="6" style="text-align:center; color:#64748b;">Sedang memuat data kehadiran...</td></tr>
           </tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- Clarification Popup Modal -->
+  <!-- Modal Pop-up Klarifikasi -->
   <div class="modal-overlay" id="clarificationModal" onclick="closeModalOnBackdrop(event)">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>Klarifikasi Kehadiran</h3>
-        <button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>
+        <h3>Pengajuan Klarifikasi Kehadiran</h3>
+        <button class="modal-close" onclick="closeModal()" aria-label="Tutup">&times;</button>
       </div>
 
       <div class="modal-grid-2">
         <div class="form-group" style="margin-bottom:0;">
-          <label for="modalDate">Date</label>
+          <label for="modalDate">Tanggal</label>
           <input type="text" id="modalDate" readonly>
         </div>
         <div class="form-group" style="margin-bottom:0;">
-          <label for="modalDuration">Duration</label>
+          <label for="modalDuration">Total Durasi</label>
           <input type="text" id="modalDuration" readonly>
         </div>
       </div>
 
       <div class="modal-grid-2">
         <div class="form-group" style="margin-bottom:0;">
-          <label for="modalCheckIn">Check-In</label>
+          <label for="modalCheckIn">Jam Datang</label>
           <input type="time" step="1" id="modalCheckIn" oninput="recalcModalDuration()">
         </div>
         <div class="form-group" style="margin-bottom:0;">
-          <label for="modalCheckOut">Check-Out</label>
+          <label for="modalCheckOut">Jam Pulang</label>
           <input type="time" step="1" id="modalCheckOut" oninput="recalcModalDuration()">
         </div>
       </div>
 
       <div class="form-group">
-        <label for="modalNotes">Remarks / Reason</label>
-        <textarea id="modalNotes" rows="2" placeholder="Contoh: Lupa checkout sesi sore / Dinas Luar / Sakit..."></textarea>
+        <label for="modalNotes">Keterangan / Alasan</label>
+        <textarea id="modalNotes" rows="2" placeholder="Contoh: Lupa absen pulang sesi sore, Dinas Luar, atau Sakit..."></textarea>
       </div>
 
       <div class="form-group">
-        <label for="modalEvidence">Evidence Link (Google Drive / URL)</label>
+        <label for="modalEvidence">Tautan Bukti Dukung (Google Drive / URL)</label>
         <input type="url" id="modalEvidence" placeholder="https://drive.google.com/...">
       </div>
 
@@ -335,13 +335,13 @@
         try {
           json = JSON.parse(rawText);
         } catch (parseErr) {
-          throw new Error('Response bukan JSON (pastikan akses Apps Script = "Anyone" & deploy versi baru).');
+          throw new Error('Respons server tidak sesuai format (pastikan akses Apps Script diatur ke "Anyone" dan sudah deploy versi terbaru).');
         }
 
         if (json.status !== 'success') throw new Error(json.message);
         initApp(json.data);
       } catch (err) {
-        document.getElementById('participantSelect').innerHTML = '<option value="">Gagal memuat</option>';
+        document.getElementById('participantSelect').innerHTML = '<option value="">Gagal memuat data</option>';
         document.getElementById('attendanceTableBody').innerHTML =
           `<tr><td colspan="6" style="text-align:center; color:#991b1b; white-space:normal;">Gagal memuat data: ${err.message}</td></tr>`;
       }
@@ -375,6 +375,15 @@
       renderTable(person);
     }
 
+    function formatStatusLabel(rec) {
+      if (rec.isClarified) return 'Terklarifikasi';
+      if (rec.status.includes('Missing Check-Out')) return 'Belum Absen Pulang';
+      if (rec.status.includes('Missing Check-In')) return 'Belum Absen Datang';
+      if (rec.status.includes('Absent')) return 'Tidak Hadir';
+      if (rec.status === 'Complete') return 'Lengkap';
+      return rec.status;
+    }
+
     function renderTable(person) {
       const tbody = document.getElementById('attendanceTableBody');
       tbody.innerHTML = '';
@@ -385,14 +394,16 @@
         else if (rec.status.includes('Missing')) badgeClass = 'badge-warn';
         else if (rec.status.includes('Absent')) badgeClass = 'badge-absent';
 
+        const statusText = formatStatusLabel(rec);
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td><strong>${rec.date}</strong></td>
           <td>${rec.checkIn}</td>
           <td>${rec.checkOut}</td>
           <td>${rec.duration}</td>
-          <td><span class="badge ${badgeClass}">${rec.status}</span></td>
-          <td><button type="button" class="btn-clarify" onclick="openClarifyModal(${recIdx})">Clarify</button></td>
+          <td><span class="badge ${badgeClass}">${statusText}</span></td>
+          <td><button type="button" class="btn-clarify" onclick="openClarifyModal(${recIdx})">Klarifikasi</button></td>
         `;
         tbody.appendChild(tr);
       });
@@ -461,7 +472,7 @@
         name: person.name,
         nip: person.nip,
         date: document.getElementById('modalDate').value,
-        status: 'Clarified',
+        status: 'Terklarifikasi',
         checkIn: document.getElementById('modalCheckIn').value,
         checkOut: document.getElementById('modalCheckOut').value,
         notes: document.getElementById('modalNotes').value,
