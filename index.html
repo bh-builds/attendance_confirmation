@@ -3,27 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rekap & Klarifikasi Kehadiran • HKN ke-62</title>
+  <title>Rekap & Klarifikasi Kehadiran • Kemenkes RI (HKN ke-62)</title>
   <style>
     :root {
-      --primary: #0f766e;
-      --primary-hover: #115e59;
-      --bg: #f8fafc;
+      --kemenkes-teal: #00796b;
+      --kemenkes-teal-dark: #005b4f;
+      --kemenkes-tosca: #009688;
+      --kemenkes-lime: #8bc34a;
+      --kemenkes-soft: #e0f2f1;
+      --kemenkes-mint: #f2f8f7;
       --card: #ffffff;
-      --border: #e2e8f0;
-      --text: #1e293b;
-      --muted: #64748b;
-      --danger: #dc2626;
+      --border: #d5e5e3;
+      --text: #102a27;
+      --muted: #526d6a;
+      --danger: #d32f2f;
     }
     * {
       box-sizing: border-box;
     }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(180deg, #e6f4f2 0%, var(--kemenkes-mint) 35%, #f7faf9 100%);
       color: var(--text);
       margin: 0;
       padding: 16px;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -32,39 +36,99 @@
       width: 100%;
       max-width: 425px;
     }
+
+    /* Brand Header Banner */
+    .brand-banner {
+      background: linear-gradient(135deg, var(--kemenkes-teal-dark) 0%, var(--kemenkes-teal) 60%, var(--kemenkes-tosca) 100%);
+      color: #ffffff;
+      border-radius: 14px;
+      padding: 18px 18px 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 6px 18px rgba(0, 121, 107, 0.22);
+      position: relative;
+      overflow: hidden;
+    }
+    .brand-banner::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--kemenkes-lime) 0%, #cddc39 100%);
+    }
+    .brand-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .brand-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background-color: var(--kemenkes-lime);
+      box-shadow: 0 0 0 2px rgba(139, 195, 74, 0.35);
+    }
+    .brand-banner h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 0 0 4px 0;
+      letter-spacing: -0.01em;
+    }
+    .brand-banner .subtitle {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.78rem;
+      margin: 0;
+      line-height: 1.4;
+    }
+
     .card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 16px 18px;
       margin-bottom: 14px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      box-shadow: 0 2px 8px rgba(0, 91, 79, 0.05);
       width: 100%;
     }
-    h1 {
-      font-size: 1.15rem;
-      margin: 0 0 4px 0;
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--kemenkes-teal-dark);
+      margin: 0 0 12px 0;
     }
-    h2 {
-      font-size: 0.95rem;
-      margin: 0 0 8px 0;
+    .section-title::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 15px;
+      border-radius: 4px;
+      background: linear-gradient(180deg, var(--kemenkes-teal) 0%, var(--kemenkes-lime) 100%);
     }
-    .subtitle {
-      color: var(--muted);
-      font-size: 0.8rem;
-      margin-bottom: 14px;
-      line-height: 1.4;
-    }
+
     .form-group {
       display: flex;
       flex-direction: column;
       margin-bottom: 12px;
+      position: relative;
     }
     .form-group:last-child {
       margin-bottom: 0;
     }
     label {
-      font-size: 0.78rem;
+      font-size: 0.77rem;
       font-weight: 600;
       margin-bottom: 5px;
       color: var(--text);
@@ -74,25 +138,117 @@
       margin-left: 2px;
     }
     select, input, textarea {
-      padding: 8px 10px;
+      padding: 9px 11px;
       border: 1px solid var(--border);
-      border-radius: 6px;
+      border-radius: 8px;
       font-size: 0.85rem;
       font-family: inherit;
-      background-color: #fff;
+      color: var(--text);
+      background-color: #ffffff;
       width: 100%;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
     select:focus, input:focus, textarea:focus {
       outline: none;
-      border-color: var(--primary);
+      border-color: var(--kemenkes-tosca);
+      box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.14);
     }
     input[readonly] {
-      background-color: #f1f5f9;
+      background-color: #f3f8f7;
       color: var(--muted);
+      font-weight: 500;
     }
+
+    /* Searchable Dropdown */
+    .searchable-wrap {
+      position: relative;
+      width: 100%;
+    }
+    .searchable-input {
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--kemenkes-tosca);
+      font-size: 0.85rem;
+      pointer-events: none;
+    }
+    .clear-search-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #e0f2f1;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      color: var(--kemenkes-teal-dark);
+      font-size: 0.95rem;
+      line-height: 1;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .clear-search-btn:hover {
+      background: #b2dfdb;
+    }
+    .dropdown-list {
+      display: none;
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid #b2dfdb;
+      border-radius: 10px;
+      box-shadow: 0 10px 24px rgba(0, 91, 79, 0.16);
+      max-height: 215px;
+      overflow-y: auto;
+      z-index: 500;
+    }
+    .dropdown-list.open {
+      display: block;
+    }
+    .dropdown-item {
+      padding: 9px 12px;
+      font-size: 0.84rem;
+      cursor: pointer;
+      border-bottom: 1px solid #edf5f4;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.12s ease;
+    }
+    .dropdown-item:last-child {
+      border-bottom: none;
+    }
+    .dropdown-item:hover, .dropdown-item.active {
+      background-color: var(--kemenkes-soft);
+      color: var(--kemenkes-teal-dark);
+    }
+    .dropdown-item .item-nip {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .dropdown-empty {
+      padding: 12px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* Table Styles */
     .table-wrap {
       overflow-x: auto;
-      margin-top: 6px;
+      border: 1px solid #e3efed;
+      border-radius: 8px;
     }
     table {
       width: 100%;
@@ -101,53 +257,78 @@
     }
     th, td {
       text-align: left;
-      padding: 8px 5px;
-      border-bottom: 1px solid var(--border);
+      padding: 9px 7px;
+      border-bottom: 1px solid #edf5f4;
       white-space: nowrap;
     }
     th {
-      background: #f1f5f9;
-      font-weight: 600;
-      color: var(--muted);
-      font-size: 0.68rem;
+      background: var(--kemenkes-soft);
+      font-weight: 700;
+      color: var(--kemenkes-teal-dark);
+      font-size: 0.67rem;
       text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
-    tr:hover {
-      background-color: #f8fafc;
+    tbody tr:last-child td {
+      border-bottom: none;
     }
+    tbody tr:hover {
+      background-color: #f6fbfa;
+    }
+
+    /* Status Badges */
     .badge {
       display: inline-block;
-      padding: 2px 6px;
+      padding: 3px 8px;
       border-radius: 999px;
       font-size: 0.66rem;
-      font-weight: 600;
+      font-weight: 700;
     }
-    .badge-complete { background: #dcfce7; color: #166534; }
-    .badge-warn { background: #fef3c7; color: #92400e; }
-    .badge-absent { background: #fee2e2; color: #991b1b; }
-    .badge-clarified { background: #dbeafe; color: #1e40af; }
+    .badge-complete {
+      background: #e8f5e9;
+      color: #1b5e20;
+      border: 1px solid #c8e6c9;
+    }
+    .badge-warn {
+      background: #fff8e1;
+      color: #8d5b00;
+      border: 1px solid #ffecb3;
+    }
+    .badge-absent {
+      background: #ffebee;
+      color: #b71c1c;
+      border: 1px solid #ffcdd2;
+    }
+    .badge-clarified {
+      background: #e0f2f1;
+      color: #005b4f;
+      border: 1px solid #80cbc4;
+    }
 
     .btn-clarify {
-      background: #f0fdfa;
-      color: var(--primary);
-      border: 1px solid #99f6e4;
-      padding: 4px 8px;
-      border-radius: 5px;
+      background: linear-gradient(180deg, #ffffff 0%, #e0f2f1 100%);
+      color: var(--kemenkes-teal-dark);
+      border: 1px solid #80cbc4;
+      padding: 4px 9px;
+      border-radius: 6px;
       font-size: 0.72rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
+      transition: all 0.15s ease;
     }
     .btn-clarify:hover {
-      background: var(--primary);
+      background: var(--kemenkes-teal);
+      border-color: var(--kemenkes-teal);
       color: #ffffff;
     }
 
-    /* Gaya Popup Modal */
+    /* Modal Popup */
     .modal-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.55);
+      background: rgba(16, 42, 39, 0.58);
+      backdrop-filter: blur(2px);
       z-index: 1000;
       align-items: center;
       justify-content: center;
@@ -158,34 +339,49 @@
     }
     .modal-card {
       background: var(--card);
-      border-radius: 12px;
+      border-radius: 14px;
       width: 100%;
       max-width: 393px;
-      padding: 18px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+      overflow: hidden;
+      box-shadow: 0 14px 32px rgba(0, 77, 64, 0.25);
       max-height: 92vh;
-      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
     }
     .modal-header {
+      background: linear-gradient(135deg, var(--kemenkes-teal-dark) 0%, var(--kemenkes-teal) 100%);
+      color: #ffffff;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
+      padding: 14px 18px;
+      border-bottom: 3px solid var(--kemenkes-lime);
     }
     .modal-header h3 {
       margin: 0;
-      font-size: 1rem;
+      font-size: 0.96rem;
+      font-weight: 700;
     }
     .modal-close {
-      background: none;
+      background: rgba(255, 255, 255, 0.16);
       border: none;
-      font-size: 1.3rem;
+      border-radius: 6px;
+      width: 26px;
+      height: 26px;
+      font-size: 1.2rem;
       line-height: 1;
-      color: var(--muted);
+      color: #ffffff;
       cursor: pointer;
-      padding: 0 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+    .modal-body {
+      padding: 16px 18px 18px;
+      overflow-y: auto;
     }
     .modal-grid-2 {
       display: grid;
@@ -200,37 +396,59 @@
     }
     .btn-primary {
       flex: 1;
-      background: var(--primary);
-      color: #fff;
+      background: linear-gradient(135deg, var(--kemenkes-teal) 0%, var(--kemenkes-tosca) 100%);
+      color: #ffffff;
       border: none;
-      padding: 9px 14px;
-      border-radius: 6px;
-      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 700;
       font-size: 0.85rem;
       cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0, 121, 107, 0.25);
     }
-    .btn-primary:hover { background: var(--primary-hover); }
-    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--kemenkes-teal-dark) 0%, var(--kemenkes-teal) 100%);
+    }
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
     .btn-secondary {
-      background: #f1f5f9;
+      background: #f1f6f5;
       color: var(--text);
       border: 1px solid var(--border);
-      padding: 9px 14px;
-      border-radius: 6px;
+      padding: 10px 14px;
+      border-radius: 8px;
       font-weight: 600;
       font-size: 0.85rem;
       cursor: pointer;
     }
+    .btn-secondary:hover {
+      background: #e4eeec;
+    }
+
     #toast {
       display: none;
-      padding: 10px 12px;
-      background: #dcfce7;
-      color: #166534;
-      border-radius: 6px;
+      padding: 11px 14px;
+      background: #e8f5e9;
+      color: #1b5e20;
+      border: 1px solid #a5d6a7;
+      border-left: 4px solid #2e7d32;
+      border-radius: 8px;
       margin-bottom: 12px;
       font-size: 0.8rem;
       font-weight: 600;
       text-align: center;
+      box-shadow: 0 3px 10px rgba(27, 94, 32, 0.1);
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 2px;
+      padding-bottom: 8px;
     }
   </style>
 </head>
@@ -238,15 +456,35 @@
   <div class="container">
     <div id="toast">Klarifikasi kehadiran berhasil disimpan!</div>
 
+    <div class="brand-banner">
+      <div class="brand-pill">
+        <span class="brand-dot"></span>
+        <span>Kementerian Kesehatan RI • HKN ke-62</span>
+      </div>
+      <h1>Rekap & Klarifikasi Kehadiran</h1>
+      <p class="subtitle">Cari dan pilih nama Anda untuk mengecek riwayat absensi atau mengajukan klarifikasi kehadiran.</p>
+    </div>
+
     <div class="card">
-      <h1>Rekap Kehadiran • HKN ke-62</h1>
-      <div class="subtitle">Silakan pilih nama Anda untuk mengecek rekap kehadiran atau mengajukan klarifikasi.</div>
+      <h2 class="section-title">Identitas Peserta</h2>
 
       <div class="form-group">
-        <label for="participantSelect">Nama Peserta</label>
-        <select id="participantSelect" onchange="onParticipantChange()">
-          <option value="">Memuat daftar peserta...</option>
-        </select>
+        <label for="participantSearch">Nama Peserta</label>
+        <div class="searchable-wrap" id="searchableContainer">
+          <span class="search-icon">&#128269;</span>
+          <input
+            type="text"
+            id="participantSearch"
+            class="searchable-input"
+            placeholder="Memuat daftar peserta..."
+            autocomplete="off"
+            disabled
+            onfocus="openDropdown()"
+            oninput="filterParticipants()"
+          >
+          <button type="button" id="clearSearchBtn" class="clear-search-btn" onclick="clearSearch()" aria-label="Hapus pencarian">&times;</button>
+          <div id="participantDropdown" class="dropdown-list"></div>
+        </div>
       </div>
 
       <div class="form-group">
@@ -256,7 +494,7 @@
     </div>
 
     <div class="card">
-      <h2>Riwayat Kehadiran per Tanggal</h2>
+      <h2 class="section-title">Riwayat Kehadiran per Tanggal</h2>
       <div class="table-wrap">
         <table>
           <thead>
@@ -270,11 +508,13 @@
             </tr>
           </thead>
           <tbody id="attendanceTableBody">
-            <tr><td colspan="6" style="text-align:center; color:#64748b;">Sedang memuat data kehadiran...</td></tr>
+            <tr><td colspan="6" style="text-align:center; color:#526d6a; padding:16px;">Sedang memuat data kehadiran...</td></tr>
           </tbody>
         </table>
       </div>
     </div>
+
+    <div class="footer-note">Sistem Verifikasi Kehadiran • Kementerian Kesehatan RI</div>
   </div>
 
   <!-- Modal Pop-up Klarifikasi -->
@@ -285,44 +525,46 @@
         <button class="modal-close" type="button" onclick="closeModal()" aria-label="Tutup">&times;</button>
       </div>
 
-      <form id="clarificationForm" onsubmit="submitModalClarification(event)">
-        <div class="modal-grid-2">
-          <div class="form-group" style="margin-bottom:0;">
-            <label for="modalDate">Tanggal</label>
-            <input type="text" id="modalDate" readonly>
+      <div class="modal-body">
+        <form id="clarificationForm" onsubmit="submitModalClarification(event)">
+          <div class="modal-grid-2">
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="modalDate">Tanggal</label>
+              <input type="text" id="modalDate" readonly>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="modalDuration">Total Durasi</label>
+              <input type="text" id="modalDuration" readonly>
+            </div>
           </div>
-          <div class="form-group" style="margin-bottom:0;">
-            <label for="modalDuration">Total Durasi</label>
-            <input type="text" id="modalDuration" readonly>
+
+          <div class="modal-grid-2">
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="modalCheckIn">Jam Datang</label>
+              <input type="time" step="1" id="modalCheckIn" oninput="recalcModalDuration()">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="modalCheckOut">Jam Pulang</label>
+              <input type="time" step="1" id="modalCheckOut" oninput="recalcModalDuration()">
+            </div>
           </div>
-        </div>
 
-        <div class="modal-grid-2">
-          <div class="form-group" style="margin-bottom:0;">
-            <label for="modalCheckIn">Jam Datang</label>
-            <input type="time" step="1" id="modalCheckIn" oninput="recalcModalDuration()">
+          <div class="form-group">
+            <label for="modalNotes">Keterangan / Alasan<span class="req">*</span></label>
+            <textarea id="modalNotes" rows="2" required placeholder="Wajib diisi — contoh: Lupa absen pulang sesi sore, Dinas Luar, atau Sakit..."></textarea>
           </div>
-          <div class="form-group" style="margin-bottom:0;">
-            <label for="modalCheckOut">Jam Pulang</label>
-            <input type="time" step="1" id="modalCheckOut" oninput="recalcModalDuration()">
+
+          <div class="form-group">
+            <label for="modalEvidence">Tautan Bukti Dukung (Google Drive / URL)<span class="req">*</span></label>
+            <input type="url" id="modalEvidence" required placeholder="https://drive.google.com/...">
           </div>
-        </div>
 
-        <div class="form-group">
-          <label for="modalNotes">Keterangan / Alasan<span class="req">*</span></label>
-          <textarea id="modalNotes" rows="2" required placeholder="Wajib diisi — contoh: Lupa absen pulang sesi sore, Dinas Luar, atau Sakit..."></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="modalEvidence">Tautan Bukti Dukung (Google Drive / URL)<span class="req">*</span></label>
-          <input type="url" id="modalEvidence" required placeholder="https://drive.google.com/...">
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" class="btn-secondary" onclick="closeModal()">Batal</button>
-          <button type="submit" class="btn-primary" id="modalSaveBtn">Simpan Klarifikasi</button>
-        </div>
-      </form>
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary" onclick="closeModal()">Batal</button>
+            <button type="submit" class="btn-primary" id="modalSaveBtn">Simpan Klarifikasi</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -330,8 +572,16 @@
     const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzM80HcT9z6vG9lhzHcFhFDOy6w3dHK1LnN-R5xEE4DkcxuuVDAmq2jDpO3DHVxmyKgvw/exec';
 
     let appData = { dates: [], participants: [] };
+    let selectedParticipantIdx = -1;
 
     window.addEventListener('DOMContentLoaded', loadAttendanceData);
+
+    document.addEventListener('click', (e) => {
+      const container = document.getElementById('searchableContainer');
+      if (container && !container.contains(e.target)) {
+        closeDropdown();
+      }
+    });
 
     async function loadAttendanceData() {
       try {
@@ -348,38 +598,110 @@
         if (json.status !== 'success') throw new Error(json.message);
         initApp(json.data);
       } catch (err) {
-        document.getElementById('participantSelect').innerHTML = '<option value="">Gagal memuat data</option>';
+        const searchInput = document.getElementById('participantSearch');
+        searchInput.placeholder = 'Gagal memuat data';
         document.getElementById('attendanceTableBody').innerHTML =
-          `<tr><td colspan="6" style="text-align:center; color:#991b1b; white-space:normal;">Gagal memuat data: ${err.message}</td></tr>`;
+          `<tr><td colspan="6" style="text-align:center; color:#b71c1c; white-space:normal; padding:14px;">Gagal memuat data: ${err.message}</td></tr>`;
       }
     }
 
     function initApp(data) {
-      appData = data;
-      const pSelect = document.getElementById('participantSelect');
-      const previousSelectedName = pSelect.options[pSelect.selectedIndex]?.textContent;
+      const previousSelectedName = selectedParticipantIdx >= 0
+        ? appData.participants[selectedParticipantIdx]?.name
+        : null;
 
-      pSelect.innerHTML = '';
-      data.participants.forEach((p, idx) => {
-        const opt = document.createElement('option');
-        opt.value = idx;
-        opt.textContent = p.name;
-        if (p.name === previousSelectedName) opt.selected = true;
-        pSelect.appendChild(opt);
-      });
+      appData = data;
+      const searchInput = document.getElementById('participantSearch');
+      searchInput.disabled = false;
+      searchInput.placeholder = 'Ketik nama atau NIP peserta...';
 
       if (data.participants.length > 0) {
-        onParticipantChange();
+        let targetIdx = 0;
+        if (previousSelectedName) {
+          const foundIdx = data.participants.findIndex(p => p.name === previousSelectedName);
+          if (foundIdx !== -1) targetIdx = foundIdx;
+        }
+        selectParticipant(targetIdx, false);
       }
     }
 
-    function onParticipantChange() {
-      const idx = document.getElementById('participantSelect').value;
+    function openDropdown() {
+      if (!appData.participants.length) return;
+      renderDropdownOptions(document.getElementById('participantSearch').value);
+      document.getElementById('participantDropdown').classList.add('open');
+    }
+
+    function closeDropdown() {
+      document.getElementById('participantDropdown').classList.remove('open');
+      if (selectedParticipantIdx >= 0 && appData.participants[selectedParticipantIdx]) {
+        document.getElementById('participantSearch').value = appData.participants[selectedParticipantIdx].name;
+        toggleClearBtn();
+      }
+    }
+
+    function filterParticipants() {
+      const query = document.getElementById('participantSearch').value;
+      toggleClearBtn();
+      renderDropdownOptions(query);
+      document.getElementById('participantDropdown').classList.add('open');
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('participantSearch');
+      input.value = '';
+      toggleClearBtn();
+      renderDropdownOptions('');
+      document.getElementById('participantDropdown').classList.add('open');
+      input.focus();
+    }
+
+    function toggleClearBtn() {
+      const val = document.getElementById('participantSearch').value;
+      document.getElementById('clearSearchBtn').style.display = val ? 'flex' : 'none';
+    }
+
+    function renderDropdownOptions(query) {
+      const listEl = document.getElementById('participantDropdown');
+      const q = (query || '').trim().toLowerCase();
+
+      const matches = appData.participants
+        .map((p, idx) => ({ p, idx }))
+        .filter(({ p }) =>
+          p.name.toLowerCase().includes(q) ||
+          (p.nip && p.nip.toLowerCase().includes(q))
+        );
+
+      if (matches.length === 0) {
+        listEl.innerHTML = `<div class="dropdown-empty">Nama atau NIP tidak ditemukan</div>`;
+        return;
+      }
+
+      listEl.innerHTML = '';
+      matches.forEach(({ p, idx }) => {
+        const item = document.createElement('div');
+        item.className = 'dropdown-item' + (idx === selectedParticipantIdx ? ' active' : '');
+        item.innerHTML = `
+          <span><strong>${p.name}</strong></span>
+          <span class="item-nip">NIP: ${p.nip || '-'}</span>
+        `;
+        item.onclick = () => selectParticipant(idx, true);
+        listEl.appendChild(item);
+      });
+    }
+
+    function selectParticipant(idx, shouldCloseDropdown) {
       const person = appData.participants[idx];
       if (!person) return;
 
-      document.getElementById('nipDisplay').value = person.nip;
+      selectedParticipantIdx = idx;
+      document.getElementById('participantSearch').value = person.name;
+      document.getElementById('nipDisplay').value = person.nip || '-';
+      toggleClearBtn();
       renderTable(person);
+
+      if (shouldCloseDropdown) {
+        document.getElementById('participantDropdown').classList.remove('open');
+      }
     }
 
     function formatStatusLabel(rec) {
@@ -417,8 +739,7 @@
     }
 
     function openClarifyModal(recIdx) {
-      const pIdx = document.getElementById('participantSelect').value;
-      const person = appData.participants[pIdx];
+      const person = appData.participants[selectedParticipantIdx];
       if (!person) return;
 
       const rec = person.records[recIdx];
@@ -469,8 +790,7 @@
     async function submitModalClarification(e) {
       e.preventDefault();
 
-      const pIdx = document.getElementById('participantSelect').value;
-      const person = appData.participants[pIdx];
+      const person = appData.participants[selectedParticipantIdx];
       if (!person) return;
 
       const notesVal = document.getElementById('modalNotes').value.trim();
