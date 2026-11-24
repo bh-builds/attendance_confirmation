@@ -190,7 +190,9 @@
       top: 50%;
       transform: translateY(-50%);
       color: var(--kemenkes-tosca);
-      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       pointer-events: none;
     }
 
@@ -525,12 +527,12 @@
     <div class="controls-card">
       <div class="search-group">
         <div class="search-box">
-        <span class="search-icon" aria-hidden="true">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="7.5"></circle>
-        <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
-        </svg>
-        </span>
+          <span class="search-icon" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7.5"></circle>
+              <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+            </svg>
+          </span>
           <input
             type="text"
             id="searchInput"
@@ -543,8 +545,8 @@
         <select id="statusFilter" class="filter-select" onchange="applyFilters()">
           <option value="ALL">Semua Peserta</option>
           <option value="HAS_SHORT">Memiliki Durasi Kurang (&lt; 6 Jam)</option>
-          <option value="HAS_CLARIFIED">Sudah Terklarifikasi</option>
-          <option value="COMPLETE_ONLY">Semua Kehadiran Lengkap (&ge; 6 Jam)</option>
+          <option value="HAS_CLARIFIED">Sudah Terklarifikasi (Menunggu Approve)</option>
+          <option value="COMPLETE_ONLY">Semua Kehadiran Lengkap (&ge; 6 Jam / Approved)</option>
         </select>
       </div>
 
@@ -557,10 +559,10 @@
     <!-- Color Legend -->
     <div class="legend-bar">
       <strong>Keterangan Durasi:</strong>
-      <span class="legend-item"><span class="dur-pill dur-ok">&ge; 6 Jam</span> Memenuhi</span>
+      <span class="legend-item"><span class="dur-pill dur-ok">&ge; 6 Jam / Approved</span> Memenuhi</span>
       <span class="legend-item"><span class="dur-pill dur-short">&lt; 6 Jam</span> Kurang</span>
       <span class="legend-item"><span class="dur-pill dur-zero">0 jam 0 menit</span> Belum Absen Pulang</span>
-      <span class="legend-item"><span class="dur-pill dur-clarified">Terklarifikasi</span> Sudah Diklarifikasi</span>
+      <span class="legend-item"><span class="dur-pill dur-clarified">Terklarifikasi</span> Menunggu Approve</span>
     </div>
 
     <!-- Pivot Table -->
@@ -585,9 +587,7 @@
   </div>
 
   <script>
-    // Apps Script Web App endpoint connected to spreadsheet 1FfbhZIa7wJIHpTjfB4domAnzf7boYX7FiFpu1fgbcsA (PivotTable)
     const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzM80HcT9z6vG9lhzHcFhFDOy6w3dHK1LnN-R5xEE4DkcxuuVDAmq2jDpO3DHVxmyKgvw/exec';
-    // Direct Google Visualization JSON fallback (works automatically if sheet sharing is "Anyone with link")
     const SPREADSHEET_ID = '1FfbhZIa7wJIHpTjfB4domAnzf7boYX7FiFpu1fgbcsA';
     const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=PivotTable`;
 
@@ -596,12 +596,18 @@
 
     window.addEventListener('DOMContentLoaded', loadPivotData);
 
+    function isRecordApproved(rec) {
+      if (!rec) return false;
+      const appVal = String(rec.approved || '').trim().toUpperCase();
+      const statusVal = String(rec.status || '').trim().toUpperCase();
+      return appVal === 'YES' || statusVal === 'APPROVED' || statusVal === 'COMPLETE';
+    }
+
     async function loadPivotData() {
       const tbody = document.getElementById('pivotTableBody');
       tbody.innerHTML = `<tr><td colspan="18" class="state-message">Sedang memuat data dari sheet <strong>PivotTable</strong>...</td></tr>`;
 
       try {
-        // 1. Primary fetch via deployed Apps Script backend
         const res = await fetch(GAS_WEB_APP_URL, { redirect: 'follow' });
         const text = await res.text();
         const json = JSON.parse(text);
@@ -612,7 +618,6 @@
         }
         throw new Error(json.message || 'Format respons Apps Script tidak valid');
       } catch (primaryErr) {
-        // 2. Fallback: parse directly from Google Sheets gviz PivotTable endpoint
         try {
           const gvizRes = await fetch(GVIZ_URL);
           const gvizText = await gvizRes.text();
@@ -635,7 +640,6 @@
       const obj = JSON.parse(jsonStr);
       const rows = obj.table.rows || [];
 
-      // Locate header rows in PivotTable (Dates row and Nama/NIP/Datang/Pulang/Durasi row)
       let dateRowIdx = -1;
       let subHeaderRowIdx = -1;
       for (let i = 0; i < Math.min(rows.length, 8); i++) {
@@ -683,6 +687,7 @@
             checkOut,
             duration,
             status,
+            approved: '',
             isClarified: false
           };
         });
@@ -794,17 +799,19 @@
         const activeRecs = person.records.filter(r => r.duration && r.duration !== '-');
         if (statusFilter === 'HAS_SHORT') {
           return activeRecs.some(r => {
+            if (isRecordApproved(r) || r.isClarified) return false;
             const mins = parseDurationMinutes(r.duration);
-            return mins !== null && mins < 360 && !r.isClarified;
+            return mins !== null && mins < 360;
           });
         }
         if (statusFilter === 'HAS_CLARIFIED') {
-          return person.records.some(r => r.isClarified);
+          return person.records.some(r => r.isClarified && !isRecordApproved(r));
         }
         if (statusFilter === 'COMPLETE_ONLY') {
           return activeRecs.length > 0 && activeRecs.every(r => {
+            if (isRecordApproved(r) || r.isClarified) return true;
             const mins = parseDurationMinutes(r.duration);
-            return r.isClarified || (mins !== null && mins >= 360);
+            return mins !== null && mins >= 360;
           });
         }
         return true;
@@ -833,7 +840,7 @@
         `;
 
         pivotData.dates.forEach((date, dIdx) => {
-          const rec = person.records[dIdx] || { checkIn: '-', checkOut: '-', duration: '-', isClarified: false };
+          const rec = person.records[dIdx] || { checkIn: '-', checkOut: '-', duration: '-', approved: '', isClarified: false };
           const in24 = formatTime24(rec.checkIn);
           const out24 = formatTime24(rec.checkOut);
           const dur = rec.duration || '-';
@@ -843,16 +850,23 @@
 
           let durHtml = `<span class="empty-dash">-</span>`;
           if (dur !== '-') {
+            const approved = isRecordApproved(rec);
             const mins = parseDurationMinutes(dur);
             let pillClass = 'dur-ok';
-            if (rec.isClarified) {
+            let label = dur;
+
+            if (approved) {
+              pillClass = 'dur-ok';
+              label = dur;
+            } else if (rec.isClarified) {
               pillClass = 'dur-clarified';
+              label = `${dur} ⚠`;
             } else if (mins === 0) {
               pillClass = 'dur-zero';
             } else if (mins !== null && mins < 360) {
               pillClass = 'dur-short';
             }
-            const label = rec.isClarified ? `${dur} ⚠` : dur;
+
             durHtml = `<span class="dur-pill ${pillClass}">${label}</span>`;
           }
 
@@ -914,4 +928,3 @@
   </script>
 </body>
 </html>
-
