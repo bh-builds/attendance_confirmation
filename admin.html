@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Verifikasi Klarifikasi • HKN ke-62 Kemenkes RI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Roboto+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="256x256" href="./favicon.png">
+  <style>
+    :root {
+      --kemenkes-teal: #00796b;
+      --kemenkes-teal-dark: #004d40;
+      --kemenkes-tosca: #009688;
+      --kemenkes-lime: #8bc34a;
+      --kemenkes-soft: #e0f2f1;
+      --kemenkes-mint: #f2f8f7;
+      --surface: #ffffff;
+      --border: #d5e5e3;
+      --border-strong: #b2dfdb;
+      --text: #102a27;
+      --muted: #526d6a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(180deg, #e4f3f1 0%, var(--kemenkes-mint) 30%, #f8fbfa 100%);
+      color: var(--text);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .page-wrapper {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* Top Navigation Bar */
+    .top-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .nav-tabs {
+      display: inline-flex;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px;
+      gap: 4px;
+      box-shadow: 0 2px 8px rgba(0, 91, 79, 0.05);
+    }
+
+    .nav-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--muted);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .nav-tab:hover {
+      color: var(--kemenkes-teal-dark);
+      background: var(--kemenkes-mint);
+    }
+
+    .nav-tab.active {
+      background: linear-gradient(135deg, var(--kemenkes-teal-dark) 0%, var(--kemenkes-teal) 100%);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 77, 64, 0.2);
+    }
+
+    /* Hero Header */
+    .hero-header {
+      background: linear-gradient(135deg, var(--kemenkes-teal-dark) 0%, var(--kemenkes-teal) 55%, var(--kemenkes-tosca) 100%);
+      color: #ffffff;
+      border-radius: 16px;
+      padding: 22px 26px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 24px rgba(0, 91, 79, 0.18);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hero-header::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--kemenkes-lime) 0%, #cddc39 100%);
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .brand-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--kemenkes-lime);
+      box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.35);
+    }
+
+    .hero-title h1 {
+      margin: 0 0 4px 0;
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-title p {
+      margin: 0;
+      font-size: 0.84rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .stat-pill {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 12px;
+      padding: 9px 15px;
+      min-width: 115px;
+      backdrop-filter: blur(4px);
+    }
+
+    .stat-pill .stat-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.85);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .stat-pill .stat-value {
+      font-size: 1.22rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Controls Bar */
+    .controls-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 10px rgba(0, 91, 79, 0.05);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+      max-width: 360px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 9px 34px 9px 34px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 0.84rem;
+      color: var(--text);
+      background: #fbfdfc;
+      transition: all 0.15s ease;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--kemenkes-tosca);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(0, 150, 136, 0.14);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--kemenkes-tosca);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .clear-btn {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--kemenkes-soft);
+      color: var(--kemenkes-teal-dark);
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 0.9rem;
+      line-height: 1;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .filter-select {
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 0.84rem;
+      color: var(--text);
+      background: #fbfdfc;
+      cursor: pointer;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--kemenkes-tosca);
+    }
+
+    .btn {
+      padding: 9px 14px;
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn:hover {
+      background: var(--kemenkes-mint);
+      border-color: var(--kemenkes-tosca);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      z-index: 999;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: #ffffff;
+      background: var(--kemenkes-teal-dark);
+      box-shadow: 0 8px 24px rgba(0, 77, 64, 0.28);
+      display: none;
+      align-items: center;
+      gap: 8px;
+      max-width: 420px;
+    }
+
+    .toast.error {
+      background: #b71c1c;
+    }
+
+    /* Table Styles */
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 4px 16px rgba(0, 91, 79, 0.06);
+      overflow: hidden;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      max-height: 72vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-family: "Roboto Condensed", "Arial Narrow", sans-serif;
+      font-size: 0.78rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    thead th {
+      background: var(--kemenkes-soft);
+      color: var(--kemenkes-teal-dark);
+      font-weight: 700;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 10px 8px;
+      border-bottom: 2px solid var(--border-strong);
+      border-right: 1px solid #d2e7e4;
+      white-space: nowrap;
+      text-align: left;
+    }
+
+    thead th.text-center,
+    tbody td.text-center {
+      text-align: center;
+    }
+
+    tbody td {
+      padding: 8px 8px;
+      border-bottom: 1px solid #edf5f4;
+      border-right: 1px solid #f2f7f6;
+      background: #ffffff;
+      vertical-align: middle;
+    }
+
+    tbody tr:nth-child(even) td {
+      background: #fafdfc;
+    }
+
+    tbody tr:hover td {
+      background: #eef8f6;
+    }
+
+    .nowrap {
+      white-space: nowrap;
+    }
+
+    .col-name {
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .col-nip {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .col-notes {
+      min-width: 220px;
+      max-width: 340px;
+      white-space: normal;
+      line-height: 1.35;
+      color: #263e3b;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge-ok {
+      background: #e8f5e9;
+      color: #1b5e20;
+      border: 1px solid #c8e6c9;
+    }
+
+    .badge-short {
+      background: #FEF3C7;
+      color: #78350F;
+      border: 1px solid #FDE68A;
+    }
+
+    .badge-clarified {
+      background: #e0f2f1;
+      color: #005b4f;
+      border: 1px solid #80cbc4;
+    }
+
+    .badge-approved {
+      background: #e8f5e9;
+      color: #1b5e20;
+      border: 1px solid #a5d6a7;
+    }
+
+    .badge-pending {
+      background: #fff8e1;
+      color: #8d5b00;
+      border: 1px solid #ffe082;
+    }
+
+    /* Evidence Link */
+    .evidence-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #f0f9f8;
+      border: 1px solid #b2dfdb;
+      color: var(--kemenkes-teal-dark);
+      font-weight: 700;
+      font-size: 0.72rem;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .evidence-link:hover {
+      background: var(--kemenkes-soft);
+    }
+
+    /* Approve Action Button */
+    .btn-approve {
+      background: linear-gradient(135deg, var(--kemenkes-teal) 0%, var(--kemenkes-tosca) 100%);
+      color: #ffffff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 7px;
+      font-family: "Roboto Condensed", "Arial Narrow", sans-serif;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      white-space: nowrap;
+      box-shadow: 0 2px 6px rgba(0, 121, 107, 0.22);
+      transition: all 0.15s ease;
+    }
+
+    .btn-approve:hover:not(:disabled) {
+      background: linear-gradient(135deg, var(--kemenkes-teal-dark) 0%, var(--kemenkes-teal) 100%);
+      transform: translateY(-1px);
+    }
+
+    .btn-approve:disabled {
+      background: #e2eceb;
+      color: #6b8582;
+      border: 1px solid #cbd9d7;
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .state-message {
+      text-align: center;
+      padding: 36px 16px;
+      color: var(--muted);
+      font-family: "Plus Jakarta Sans", sans-serif;
+      font-size: 0.86rem;
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 14px;
+      padding-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-pill-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background-color: #ffffff;
+      border: 1px solid #b2dfdb;
+      color: var(--kemenkes-teal-dark);
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 2px 6px rgba(0, 91, 79, 0.06);
+      transition: all 0.16s ease;
+    }
+
+    .footer-pill-link:hover {
+      background-color: var(--kemenkes-teal);
+      border-color: var(--kemenkes-teal);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <!-- Top Admin Menu Navigation -->
+    <nav class="top-nav" aria-label="Menu Admin">
+      <div class="nav-tabs">
+        <button type="button" class="nav-tab active" onclick="loadClarifications()">
+          <span>&#128203; Daftar Klarifikasi (Clarifications)</span>
+        </button>
+        <a href="./index.html" target="_blank" rel="noopener noreferrer" class="nav-tab">
+          <span>&#128100; Form Peserta</span>
+        </a>
+        <a href="./pivot.html" target="_blank" rel="noopener noreferrer" class="nav-tab">
+          <span>&#128202; Rekap PivotTable</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <div class="hero-header">
+      <div class="hero-title">
+        <div class="brand-badge">
+          <span class="brand-dot"></span>
+          <span>Panel Admin • Kemenkes RI HKN ke-62</span>
+        </div>
+        <h1>Persetujuan Klarifikasi Kehadiran</h1>
+        <p>Tinjau pengajuan klarifikasi peserta dan sinkronkan log CHECKIN / CHECKOUT ke <strong>Sheet1</strong>.</p>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-pill">
+          <span class="stat-label">Total Pengajuan</span>
+          <span class="stat-value" id="statTotal">-</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">Menunggu Approve</span>
+          <span class="stat-value" id="statPending">-</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">Approved (YES)</span>
+          <span class="stat-value" id="statApproved">-</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="controls-card">
+      <div class="search-group">
+        <div class="search-box">
+          <span class="search-icon" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7.5"></circle>
+              <line x1="21" y1="21" x2="16.5" y2="16.5"></line>
+            </svg>
+          </span>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Cari nama peserta, NIP, tanggal, atau alasan..."
+            oninput="applyFilters()"
+          >
+          <button type="button" id="clearSearchBtn" class="clear-btn" onclick="clearSearch()" aria-label="Hapus pencarian">&times;</button>
+        </div>
+
+        <select id="approvalFilter" class="filter-select" onchange="applyFilters()">
+          <option value="ALL">Semua Status Approval</option>
+          <option value="PENDING">Menunggu Approve (Belum YES)</option>
+          <option value="APPROVED">Sudah Approved (YES)</option>
+        </select>
+      </div>
+
+      <div>
+        <button type="button" class="btn" onclick="loadClarifications()">&#8635; Muat Ulang Data</button>
+      </div>
+    </div>
+
+    <!-- Clarifications Table -->
+    <div class="table-card">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th class="text-center">No</th>
+              <th>Waktu Pengajuan</th>
+              <th>Nama Peserta</th>
+              <th>NIP</th>
+              <th class="text-center">Tanggal</th>
+              <th class="text-center">Datang (24J)</th>
+              <th class="text-center">Pulang (24J)</th>
+              <th class="text-center">Durasi</th>
+              <th>Keterangan / Alasan</th>
+              <th class="text-center">Bukti Dukung</th>
+              <th class="text-center">Approved</th>
+              <th class="text-center">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="clarificationsBody">
+            <tr>
+              <td colspan="12" class="state-message">Memuat data dari sheet <strong>Clarifications</strong>...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <div class="footer-links">
+        <a href="./index.html" target="_blank" rel="noopener noreferrer" class="footer-pill-link">Form Verifikasi Peserta &rarr;</a>
+        <a href="./pivot.html" target="_blank" rel="noopener noreferrer" class="footer-pill-link">&#128202; Lihat Rekap Lengkap (PivotTable) &rarr;</a>
+      </div>
+      <span>Admin Verifikasi Kehadiran HKN62 • bh-builds 081383126759</span>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzM80HcT9z6vG9lhzHcFhFDOy6w3dHK1LnN-R5xEE4DkcxuuVDAmq2jDpO3DHVxmyKgvw/exec';
+    const SPREADSHEET_ID = '1FfbhZIa7wJIHpTjfB4domAnzf7boYX7FiFpu1fgbcsA';
+    const GVIZ_CLARIFICATIONS_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=Clarifications`;
+
+    let clarificationsList = [];
+    let filteredList = [];
+
+    window.addEventListener('DOMContentLoaded', loadClarifications);
+
+    function showToast(msg, isError = false) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.className = isError ? 'toast error' : 'toast';
+      el.style.display = 'flex';
+      clearTimeout(el._timer);
+      el._timer = setTimeout(() => {
+        el.style.display = 'none';
+      }, 4200);
+    }
+
+    async function loadClarifications() {
+      const tbody = document.getElementById('clarificationsBody');
+      tbody.innerHTML = `<tr><td colspan="12" class="state-message">Sedang memuat daftar peserta dari sheet <strong>Clarifications</strong>...</td></tr>`;
+
+      try {
+        const res = await fetch(`${GAS_WEB_APP_URL}?action=clarifications`, { redirect: 'follow' });
+        const text = await res.text();
+        const json = JSON.parse(text);
+
+        if (json.status === 'success' && Array.isArray(json.data)) {
+          clarificationsList = json.data;
+          updateStats();
+          applyFilters();
+          return;
+        }
+        throw new Error(json.message || 'Endpoint action=clarifications belum tersedia di Code.gs');
+      } catch (err) {
+        // Fallback read from Google Sheets gviz if Code.gs hasn't been redeployed yet
+        try {
+          const gvizRes = await fetch(GVIZ_CLARIFICATIONS_URL);
+          const gvizText = await gvizRes.text();
+          clarificationsList = parseGvizClarifications(gvizText);
+          updateStats();
+          applyFilters();
+        } catch (fallbackErr) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="12" class="state-message" style="color:#b71c1c;">
+                Gagal memuat data Clarifications: ${escapeHtml(err.message)}
+              </td>
+            </tr>`;
+        }
+      }
+    }
+
+    function parseGvizClarifications(rawText) {
+      const jsonStr = rawText.replace(/^[^(]+\(/, '').replace(/\);?\s*$/, '');
+      const obj = JSON.parse(jsonStr);
+      const rows = obj.table.rows || [];
+      const list = [];
+
+      rows.forEach((r, idx) => {
+        const c = r.c || [];
+        const nama = getCellVal(c[1]);
+        if (!nama || nama === 'Nama') return;
+        list.push({
+          rowNumber: idx + 2,
+          submittedAt: getCellVal(c[0]),
+          nama: nama,
+          nip: getCellVal(c[2]),
+          date: getCellVal(c[3]),
+          clarifiedCheckIn: getCellVal(c[4]),
+          clarifiedCheckOut: getCellVal(c[5]),
+          calculatedDuration: getCellVal(c[6]),
+          status: getCellVal(c[7]),
+          notes: getCellVal(c[8]),
+          linkGDrive: getCellVal(c[9]),
+          approved: getCellVal(c[10]).toUpperCase()
+        });
+      });
+
+      return list;
+    }
+
+    function getCellVal(cell) {
+      if (!cell) return '';
+      const v = cell.f !== undefined && cell.f !== null ? cell.f : cell.v;
+      return v !== undefined && v !== null ? String(v).trim() : '';
+    }
+
+    function formatTime24(raw) {
+      if (!raw || raw === '-') return '-';
+      const str = String(raw).trim();
+      const m = str.match(/^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?\s*(AM|PM)?$/i);
+      if (m) {
+        let hrs = parseInt(m[1], 10);
+        const mins = parseInt(m[2], 10);
+        const secs = m[3] !== undefined ? parseInt(m[3], 10) : 0;
+        const period = m[4] ? m[4].toUpperCase() : null;
+        if (period === 'PM' && hrs < 12) hrs += 12;
+        if (period === 'AM' && hrs === 12) hrs = 0;
+        if (hrs >= 0 && hrs <= 23 && mins >= 0 && mins <= 59 && secs >= 0 && secs <= 59) {
+          return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+      }
+      return str;
+    }
+
+    function parseDurationMinutes(durationStr) {
+      if (!durationStr || durationStr === '-') return null;
+      const str = String(durationStr).trim().toLowerCase();
+      const jamMatch = str.match(/(\d+)\s*jam/);
+      const menitMatch = str.match(/(\d+)\s*menit/);
+      if (jamMatch || menitMatch) {
+        const hrs = jamMatch ? parseInt(jamMatch[1], 10) : 0;
+        const mins = menitMatch ? parseInt(menitMatch[1], 10) : 0;
+        return hrs * 60 + mins;
+      }
+      return null;
+    }
+
+    function updateStats() {
+      const total = clarificationsList.length;
+      const approvedCount = clarificationsList.filter(item => item.approved === 'YES').length;
+      const pendingCount = total - approvedCount;
+
+      document.getElementById('statTotal').textContent = total;
+      document.getElementById('statPending').textContent = pendingCount;
+      document.getElementById('statApproved').textContent = approvedCount;
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('searchInput');
+      input.value = '';
+      applyFilters();
+      input.focus();
+    }
+
+    function applyFilters() {
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      const approvalFilter = document.getElementById('approvalFilter').value;
+      document.getElementById('clearSearchBtn').style.display = query ? 'flex' : 'none';
+
+      filteredList = clarificationsList.filter(item => {
+        const isApproved = item.approved === 'YES';
+        if (approvalFilter === 'APPROVED' && !isApproved) return false;
+        if (approvalFilter === 'PENDING' && isApproved) return false;
+
+        if (!query) return true;
+        return (
+          item.nama.toLowerCase().includes(query) ||
+          item.nip.toLowerCase().includes(query) ||
+          item.date.toLowerCase().includes(query) ||
+          item.notes.toLowerCase().includes(query)
+        );
+      });
+
+      renderTable();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('clarificationsBody');
+
+      if (filteredList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="12" class="state-message">Tidak ada data klarifikasi yang sesuai dengan filter.</td></tr>`;
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+
+      filteredList.forEach((item, idx) => {
+        const isApproved = item.approved === 'YES';
+        const tr = document.createElement('tr');
+
+        const mins = parseDurationMinutes(item.calculatedDuration);
+        let durBadgeClass = 'badge-ok';
+        if (mins !== null && mins < 360) durBadgeClass = 'badge-short';
+
+        const linkHtml = item.linkGDrive
+          ? `<a href="${escapeHtml(item.linkGDrive)}" target="_blank" rel="noopener noreferrer" class="evidence-link">&#128279; Buka Bukti</a>`
+          : `<span style="color:#9ab0ad;">-</span>`;
+
+        const approvedBadge = isApproved
+          ? `<span class="badge badge-approved">YES</span>`
+          : `<span class="badge badge-pending">PENDING</span>`;
+
+        tr.innerHTML = `
+          <td class="text-center nowrap">${idx + 1}</td>
+          <td class="nowrap" style="color:var(--muted);">${escapeHtml(item.submittedAt || '-')}</td>
+          <td class="col-name">${escapeHtml(item.nama)}</td>
+          <td class="col-nip">${escapeHtml(item.nip || '-')}</td>
+          <td class="text-center nowrap">${escapeHtml(item.date || '-')}</td>
+          <td class="text-center nowrap">${escapeHtml(formatTime24(item.clarifiedCheckIn))}</td>
+          <td class="text-center nowrap">${escapeHtml(formatTime24(item.clarifiedCheckOut))}</td>
+          <td class="text-center nowrap"><span class="badge ${durBadgeClass}">${escapeHtml(item.calculatedDuration || '-')}</span></td>
+          <td class="col-notes">${escapeHtml(item.notes || '-')}</td>
+          <td class="text-center">${linkHtml}</td>
+          <td class="text-center" id="status-cell-${item.rowNumber}">${approvedBadge}</td>
+          <td class="text-center">
+            <button
+              type="button"
+              class="btn-approve"
+              id="btn-approve-${item.rowNumber}"
+              ${isApproved ? 'disabled' : ''}
+              onclick="approveRow(${item.rowNumber})"
+            >
+              ${isApproved ? 'Approved ✓' : 'Approve'}
+            </button>
+          </td>
+        `;
+
+        fragment.appendChild(tr);
+      });
+
+      tbody.innerHTML = '';
+      tbody.appendChild(fragment);
+    }
+
+    async function approveRow(rowNumber) {
+      const targetItem = clarificationsList.find(x => x.rowNumber === rowNumber);
+      if (!targetItem || targetItem.approved === 'YES') return;
+
+      const btn = document.getElementById(`btn-approve-${rowNumber}`);
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Memproses...';
+      }
+
+      try {
+        const response = await fetch(GAS_WEB_APP_URL, {
+          method: 'POST',
+          redirect: 'follow',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'approveClarification',
+            rowNumber: rowNumber
+          })
+        });
+
+        const text = await response.text();
+        const result = JSON.parse(text);
+
+        if (result.status !== 'success') {
+          throw new Error(result.message || 'Gagal memproses approval.');
+        }
+
+        // Update local state so button stays deactivated immediately and across filter switches
+        targetItem.approved = 'YES';
+        updateStats();
+
+        const statusCell = document.getElementById(`status-cell-${rowNumber}`);
+        if (statusCell) {
+          statusCell.innerHTML = `<span class="badge badge-approved">YES</span>`;
+        }
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = 'Approved ✓';
+        }
+
+        showToast(`Berhasil approve ${targetItem.nama} (${targetItem.date}) & menambahkan log ke Sheet1.`);
+      } catch (err) {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Approve';
+        }
+        showToast(`Gagal approve: ${err.message}`, true);
+      }
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+  </script>
+</body>
+</html>
