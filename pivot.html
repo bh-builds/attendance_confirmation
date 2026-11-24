@@ -167,7 +167,7 @@
 
     .search-box input {
       width: 100%;
-      padding: 9px 34px 9px 34px;
+      padding: 9px 34px;
       border: 1px solid var(--border);
       border-radius: 9px;
       font-family: inherit;
@@ -346,61 +346,57 @@
       font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.03em;
-      padding: 8px 8px;
+      padding: 8px;
       border-bottom: 2px solid var(--border-strong);
       border-right: 1px solid #cce3e0;
       white-space: nowrap;
       text-align: center;
     }
 
-    thead tr.sub-header-row th.col-left {
-      text-align: left;
+    /* Sticky Left Columns (No, Nama, NIP) */
+    .sticky-col-1,
+    .sticky-col-2,
+    .sticky-col-3 {
+      position: sticky;
+      z-index: 10;
     }
 
-    /* Sticky Left Columns (No, Nama, NIP) */
     .sticky-col-1 {
-      position: sticky;
       left: 0;
-      z-index: 10;
       min-width: 40px;
       max-width: 40px;
       text-align: center !important;
     }
 
     .sticky-col-2 {
-      position: sticky;
       left: 40px;
-      z-index: 10;
       min-width: 190px;
       max-width: 220px;
       text-align: left !important;
     }
 
     .sticky-col-3 {
-      position: sticky;
       left: 230px;
-      z-index: 10;
       min-width: 138px;
       max-width: 138px;
       text-align: left !important;
       border-right: 2px solid var(--border-strong) !important;
     }
 
-    thead tr.date-group-row th.sticky-col-1,
-    thead tr.date-group-row th.sticky-col-2,
-    thead tr.date-group-row th.sticky-col-3 {
+    thead .sticky-col-1,
+    thead .sticky-col-2,
+    thead .sticky-col-3 {
       z-index: 30;
     }
 
     thead tr.sub-header-row th.sticky-col-1,
     thead tr.sub-header-row th.sticky-col-2,
     thead tr.sub-header-row th.sticky-col-3 {
-      z-index: 30;
       background: #d2ece9;
     }
 
     tbody td {
-      padding: 8px 8px;
+      padding: 8px;
       border-bottom: 1px solid #edf5f4;
       border-right: 1px solid #f0f6f5;
       white-space: nowrap;
@@ -428,7 +424,8 @@
       font-size: 0.76rem;
     }
 
-    td.group-divider, th.group-divider {
+    td.group-divider,
+    th.group-divider {
       border-right: 2px solid var(--border-strong) !important;
     }
 
@@ -436,7 +433,7 @@
       color: #b0c4c2;
     }
 
-    /* Duration & Status Pills */
+    /* Duration Pills */
     .dur-pill {
       display: inline-block;
       padding: 2px 7px;
@@ -452,9 +449,9 @@
     }
 
     .dur-short {
-      background: #FEF3C7;
-      color: #78350F;
-      border: 1px solid #FDE68A;
+      background: #fef3c7;
+      color: #78350f;
+      border: 1px solid #fde68a;
     }
 
     .dur-zero {
@@ -463,18 +460,16 @@
       border: 1px solid #ffcdd2;
     }
 
-    .dur-clarified {
-      background: #e0f2f1;
-      color: #005b4f;
-      border: 1px solid #80cbc4;
-    }
-
     .state-message {
       text-align: center;
       padding: 36px 16px;
       color: var(--muted);
       font-family: "Plus Jakarta Sans", sans-serif;
       font-size: 0.88rem;
+    }
+
+    .state-error {
+      color: #b71c1c;
     }
 
     .footer-note {
@@ -545,8 +540,8 @@
         <select id="statusFilter" class="filter-select" onchange="applyFilters()">
           <option value="ALL">Semua Peserta</option>
           <option value="HAS_SHORT">Memiliki Durasi Kurang (&lt; 6 Jam)</option>
-          <option value="HAS_CLARIFIED">Sudah Terklarifikasi (Menunggu Approve)</option>
-          <option value="COMPLETE_ONLY">Semua Kehadiran Lengkap (&ge; 6 Jam / Approved)</option>
+          <option value="HAS_ZERO">Belum Absen Pulang (0 Jam 0 Menit)</option>
+          <option value="COMPLETE_ONLY">Semua Kehadiran Lengkap (&ge; 6 Jam)</option>
         </select>
       </div>
 
@@ -559,10 +554,9 @@
     <!-- Color Legend -->
     <div class="legend-bar">
       <strong>Keterangan Durasi:</strong>
-      <span class="legend-item"><span class="dur-pill dur-ok">&ge; 6 Jam / Approved</span> Memenuhi</span>
+      <span class="legend-item"><span class="dur-pill dur-ok">&ge; 6 Jam</span> Memenuhi</span>
       <span class="legend-item"><span class="dur-pill dur-short">&lt; 6 Jam</span> Kurang</span>
       <span class="legend-item"><span class="dur-pill dur-zero">0 jam 0 menit</span> Belum Absen Pulang</span>
-      <span class="legend-item"><span class="dur-pill dur-clarified">Terklarifikasi</span> Menunggu Approve</span>
     </div>
 
     <!-- Pivot Table -->
@@ -587,7 +581,6 @@
   </div>
 
   <script>
-    const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzM80HcT9z6vG9lhzHcFhFDOy6w3dHK1LnN-R5xEE4DkcxuuVDAmq2jDpO3DHVxmyKgvw/exec';
     const SPREADSHEET_ID = '1FfbhZIa7wJIHpTjfB4domAnzf7boYX7FiFpu1fgbcsA';
     const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=PivotTable`;
 
@@ -596,73 +589,52 @@
 
     window.addEventListener('DOMContentLoaded', loadPivotData);
 
-    function isRecordApproved(rec) {
-      if (!rec) return false;
-      const appVal = String(rec.approved || '').trim().toUpperCase();
-      const statusVal = String(rec.status || '').trim().toUpperCase();
-      return appVal === 'YES' || statusVal === 'APPROVED' || statusVal === 'COMPLETE';
-    }
-
     async function loadPivotData() {
       const tbody = document.getElementById('pivotTableBody');
-      tbody.innerHTML = `<tr><td colspan="18" class="state-message">Sedang memuat data dari sheet <strong>PivotTable</strong>...</td></tr>`;
+      tbody.innerHTML = '<tr><td colspan="18" class="state-message">Sedang memuat data dari sheet <strong>PivotTable</strong>...</td></tr>';
 
       try {
-        const res = await fetch(GAS_WEB_APP_URL, { redirect: 'follow' });
+        const res = await fetch(GVIZ_URL, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const text = await res.text();
-        const json = JSON.parse(text);
-        if (json.status === 'success' && json.data && json.data.participants) {
-          pivotData = json.data;
-          renderPivotApp();
-          return;
-        }
-        throw new Error(json.message || 'Format respons Apps Script tidak valid');
-      } catch (primaryErr) {
-        try {
-          const gvizRes = await fetch(GVIZ_URL);
-          const gvizText = await gvizRes.text();
-          const parsed = parseGvizPivotTable(gvizText);
-          pivotData = parsed;
-          renderPivotApp();
-        } catch (fallbackErr) {
-          tbody.innerHTML = `
-            <tr>
-              <td colspan="18" class="state-message" style="color:#b71c1c;">
-                Gagal memuat data PivotTable: ${primaryErr.message}
-              </td>
-            </tr>`;
-        }
+        pivotData = parseGvizPivotTable(text);
+        renderPivotApp();
+      } catch (err) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="18" class="state-message state-error">
+              Gagal memuat data PivotTable: ${escapeHtml(err.message)}
+            </td>
+          </tr>`;
       }
     }
 
     function parseGvizPivotTable(rawText) {
       const jsonStr = rawText.replace(/^[^(]+\(/, '').replace(/\);?\s*$/, '');
       const obj = JSON.parse(jsonStr);
-      const rows = obj.table.rows || [];
+      const rows = obj.table?.rows || [];
 
-      let dateRowIdx = -1;
       let subHeaderRowIdx = -1;
       for (let i = 0; i < Math.min(rows.length, 8); i++) {
-        const vals = (rows[i].c || []).map(cell => (cell && (cell.f || cell.v) ? String(cell.f || cell.v).trim() : ''));
-        if (vals[0] === 'Nama' && vals[1] === 'NIP') {
+        const c = rows[i].c || [];
+        if (getCellStr(c[0]) === 'Nama' && getCellStr(c[1]) === 'NIP') {
           subHeaderRowIdx = i;
-          dateRowIdx = i - 1;
           break;
         }
       }
 
-      if (subHeaderRowIdx === -1) {
+      if (subHeaderRowIdx < 1) {
         throw new Error('Header kolom Nama / NIP tidak ditemukan pada sheet PivotTable.');
       }
 
-      const dateCells = rows[dateRowIdx]?.c || [];
+      const dateCells = rows[subHeaderRowIdx - 1]?.c || [];
       const dates = [];
       const dateColStarts = [];
 
       for (let c = 2; c < dateCells.length; c += 3) {
-        const rawDate = dateCells[c] ? (dateCells[c].f || dateCells[c].v) : '';
-        if (rawDate) {
-          dates.push(String(rawDate).trim());
+        const rawDate = getCellStr(dateCells[c]);
+        if (rawDate && !/^(grand\s*)?total$/i.test(rawDate)) {
+          dates.push(rawDate);
           dateColStarts.push(c);
         }
       }
@@ -670,38 +642,29 @@
       const participants = [];
       for (let r = subHeaderRowIdx + 1; r < rows.length; r++) {
         const cells = rows[r].c || [];
-        const name = cells[0] && (cells[0].f || cells[0].v) ? String(cells[0].f || cells[0].v).trim() : '';
-        const nip = cells[1] && (cells[1].f || cells[1].v) ? String(cells[1].f || cells[1].v).trim() : '-';
-        if (!name || name.toLowerCase().includes('grand total')) continue;
+        const name = getCellStr(cells[0]);
+        if (!name || /grand total/i.test(name)) continue;
 
-        const records = dateColStarts.map((startCol, idx) => {
-          const checkIn = getCellStr(cells[startCol]) || '-';
-          const checkOut = getCellStr(cells[startCol + 1]) || '-';
+        const nip = getCellStr(cells[1]) || '-';
+        const records = dateColStarts.map((startCol) => {
+          const checkIn = formatTime24(getCellStr(cells[startCol]) || '-');
+          const checkOut = formatTime24(getCellStr(cells[startCol + 1]) || '-');
           const duration = getCellStr(cells[startCol + 2]) || '-';
-          let status = 'Complete';
-          if (checkIn === '-' && checkOut === '-') status = 'Absent';
-          else if (checkOut === '00:00:00' || checkOut === '-') status = 'Missing Check-Out';
-          return {
-            date: dates[idx],
-            checkIn,
-            checkOut,
-            duration,
-            status,
-            approved: '',
-            isClarified: false
-          };
+          const minutes = parseDurationMinutes(duration);
+          return { checkIn, checkOut, duration, minutes };
         });
 
         participants.push({ name, nip, records });
       }
 
+      participants.sort((a, b) => a.name.localeCompare(b.name, 'id'));
       return { dates, participants };
     }
 
     function getCellStr(cell) {
       if (!cell) return '';
-      const val = cell.f !== undefined && cell.f !== null ? cell.f : cell.v;
-      return val !== undefined && val !== null ? String(val).trim() : '';
+      const val = cell.f ?? cell.v;
+      return val != null ? String(val).trim() : '';
     }
 
     function formatTime24(raw) {
@@ -710,18 +673,18 @@
       if (str === '00:00:00') return '00:00:00';
 
       const match = str.match(/^(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?\s*(AM|PM)?$/i);
-      if (match) {
-        let hrs = parseInt(match[1], 10);
-        const mins = parseInt(match[2], 10);
-        const secs = match[3] !== undefined ? parseInt(match[3], 10) : 0;
-        const period = match[4] ? match[4].toUpperCase() : null;
+      if (!match) return str;
 
-        if (period === 'PM' && hrs < 12) hrs += 12;
-        if (period === 'AM' && hrs === 12) hrs = 0;
+      let hrs = parseInt(match[1], 10);
+      const mins = parseInt(match[2], 10);
+      const secs = match[3] !== undefined ? parseInt(match[3], 10) : 0;
+      const period = match[4]?.toUpperCase();
 
-        if (hrs >= 0 && hrs <= 23 && mins >= 0 && mins <= 59 && secs >= 0 && secs <= 59) {
-          return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-        }
+      if (period === 'PM' && hrs < 12) hrs += 12;
+      if (period === 'AM' && hrs === 12) hrs = 0;
+
+      if (hrs >= 0 && hrs <= 23 && mins >= 0 && mins <= 59 && secs >= 0 && secs <= 59) {
+        return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
       }
       return str;
     }
@@ -731,12 +694,11 @@
       const str = String(durationStr).trim().toLowerCase();
       const jamMatch = str.match(/(\d+)\s*jam/);
       const menitMatch = str.match(/(\d+)\s*menit/);
-      if (jamMatch || menitMatch) {
-        const hrs = jamMatch ? parseInt(jamMatch[1], 10) : 0;
-        const mins = menitMatch ? parseInt(menitMatch[1], 10) : 0;
-        return hrs * 60 + mins;
-      }
-      return null;
+      if (!jamMatch && !menitMatch) return null;
+
+      const hrs = jamMatch ? parseInt(jamMatch[1], 10) : 0;
+      const mins = menitMatch ? parseInt(menitMatch[1], 10) : 0;
+      return hrs * 60 + mins;
     }
 
     function renderPivotApp() {
@@ -748,31 +710,25 @@
 
     function buildTableHeaders() {
       const thead = document.getElementById('pivotTableHead');
-      const dates = pivotData.dates;
+      const dateHeaders = pivotData.dates
+        .map((date) => `<th colspan="3" class="group-divider">${escapeHtml(date)}</th>`)
+        .join('');
 
-      let groupRowHtml = `
+      const subHeaders = pivotData.dates
+        .map(() => '<th>Datang</th><th>Pulang</th><th class="group-divider">Durasi</th>')
+        .join('');
+
+      thead.innerHTML = `
         <tr class="date-group-row">
           <th class="identity-group sticky-col-1" rowspan="2">No</th>
           <th class="identity-group sticky-col-2" rowspan="2">Nama Peserta</th>
           <th class="identity-group sticky-col-3" rowspan="2">NIP</th>
+          ${dateHeaders}
+        </tr>
+        <tr class="sub-header-row">
+          ${subHeaders}
+        </tr>
       `;
-
-      dates.forEach(date => {
-        groupRowHtml += `<th colspan="3" class="group-divider">${date}</th>`;
-      });
-      groupRowHtml += `</tr>`;
-
-      let subRowHtml = `<tr class="sub-header-row">`;
-      dates.forEach(() => {
-        subRowHtml += `
-          <th>Datang</th>
-          <th>Pulang</th>
-          <th class="group-divider">Durasi</th>
-        `;
-      });
-      subRowHtml += `</tr>`;
-
-      thead.innerHTML = groupRowHtml + subRowHtml;
     }
 
     function clearSearch() {
@@ -787,32 +743,24 @@
       const statusFilter = document.getElementById('statusFilter').value;
       document.getElementById('clearSearchBtn').style.display = query ? 'flex' : 'none';
 
-      filteredParticipants = pivotData.participants.filter(person => {
+      filteredParticipants = pivotData.participants.filter((person) => {
         const matchesText =
           !query ||
           person.name.toLowerCase().includes(query) ||
-          (person.nip && person.nip.toLowerCase().includes(query));
+          person.nip.toLowerCase().includes(query);
 
         if (!matchesText) return false;
         if (statusFilter === 'ALL') return true;
 
-        const activeRecs = person.records.filter(r => r.duration && r.duration !== '-');
+        const activeRecs = person.records.filter((r) => r.duration !== '-');
         if (statusFilter === 'HAS_SHORT') {
-          return activeRecs.some(r => {
-            if (isRecordApproved(r) || r.isClarified) return false;
-            const mins = parseDurationMinutes(r.duration);
-            return mins !== null && mins < 360;
-          });
+          return activeRecs.some((r) => r.minutes !== null && r.minutes > 0 && r.minutes < 360);
         }
-        if (statusFilter === 'HAS_CLARIFIED') {
-          return person.records.some(r => r.isClarified && !isRecordApproved(r));
+        if (statusFilter === 'HAS_ZERO') {
+          return activeRecs.some((r) => r.minutes === 0);
         }
         if (statusFilter === 'COMPLETE_ONLY') {
-          return activeRecs.length > 0 && activeRecs.every(r => {
-            if (isRecordApproved(r) || r.isClarified) return true;
-            const mins = parseDurationMinutes(r.duration);
-            return mins !== null && mins >= 360;
-          });
+          return activeRecs.length > 0 && activeRecs.every((r) => r.minutes !== null && r.minutes >= 360);
         }
         return true;
       });
@@ -824,86 +772,61 @@
       const tbody = document.getElementById('pivotTableBody');
       const totalCols = 3 + pivotData.dates.length * 3;
 
-      if (filteredParticipants.length === 0) {
+      if (!filteredParticipants.length) {
         tbody.innerHTML = `<tr><td colspan="${totalCols}" class="state-message">Tidak ada data peserta yang sesuai dengan filter pencarian.</td></tr>`;
         return;
       }
 
-      const fragment = document.createDocumentFragment();
+      const emptyDash = '<span class="empty-dash">-</span>';
 
-      filteredParticipants.forEach((person, idx) => {
-        const tr = document.createElement('tr');
-        let rowHtml = `
-          <td class="sticky-col-1">${idx + 1}</td>
-          <td class="sticky-col-2 col-name" title="${person.name}">${person.name}</td>
-          <td class="sticky-col-3 col-nip">${person.nip || '-'}</td>
-        `;
+      tbody.innerHTML = filteredParticipants
+        .map((person, idx) => {
+          const cellsHtml = pivotData.dates
+            .map((_, dIdx) => {
+              const rec = person.records[dIdx] || { checkIn: '-', checkOut: '-', duration: '-', minutes: null };
+              const inHtml = rec.checkIn === '-' ? emptyDash : escapeHtml(rec.checkIn);
+              const outHtml = rec.checkOut === '-' ? emptyDash : escapeHtml(rec.checkOut);
 
-        pivotData.dates.forEach((date, dIdx) => {
-          const rec = person.records[dIdx] || { checkIn: '-', checkOut: '-', duration: '-', approved: '', isClarified: false };
-          const in24 = formatTime24(rec.checkIn);
-          const out24 = formatTime24(rec.checkOut);
-          const dur = rec.duration || '-';
+              let durHtml = emptyDash;
+              if (rec.duration !== '-') {
+                let pillClass = 'dur-ok';
+                if (rec.minutes === 0) pillClass = 'dur-zero';
+                else if (rec.minutes !== null && rec.minutes < 360) pillClass = 'dur-short';
 
-          const inHtml = in24 === '-' ? `<span class="empty-dash">-</span>` : in24;
-          const outHtml = out24 === '-' ? `<span class="empty-dash">-</span>` : out24;
+                durHtml = `<span class="dur-pill ${pillClass}">${escapeHtml(rec.duration)}</span>`;
+              }
 
-          let durHtml = `<span class="empty-dash">-</span>`;
-          if (dur !== '-') {
-            const approved = isRecordApproved(rec);
-            const mins = parseDurationMinutes(dur);
-            let pillClass = 'dur-ok';
-            let label = dur;
+              return `<td>${inHtml}</td><td>${outHtml}</td><td class="group-divider">${durHtml}</td>`;
+            })
+            .join('');
 
-            if (approved) {
-              pillClass = 'dur-ok';
-              label = dur;
-            } else if (rec.isClarified) {
-              pillClass = 'dur-clarified';
-              label = `${dur} ⚠`;
-            } else if (mins === 0) {
-              pillClass = 'dur-zero';
-            } else if (mins !== null && mins < 360) {
-              pillClass = 'dur-short';
-            }
-
-            durHtml = `<span class="dur-pill ${pillClass}">${label}</span>`;
-          }
-
-          rowHtml += `
-            <td>${inHtml}</td>
-            <td>${outHtml}</td>
-            <td class="group-divider">${durHtml}</td>
+          return `
+            <tr>
+              <td class="sticky-col-1">${idx + 1}</td>
+              <td class="sticky-col-2 col-name" title="${escapeHtml(person.name)}">${escapeHtml(person.name)}</td>
+              <td class="sticky-col-3 col-nip">${escapeHtml(person.nip)}</td>
+              ${cellsHtml}
+            </tr>
           `;
-        });
-
-        tr.innerHTML = rowHtml;
-        fragment.appendChild(tr);
-      });
-
-      tbody.innerHTML = '';
-      tbody.appendChild(fragment);
+        })
+        .join('');
     }
 
     function exportFilteredCSV() {
       if (!filteredParticipants.length) return;
 
       const headers = ['No', 'Nama', 'NIP'];
-      pivotData.dates.forEach(date => {
+      pivotData.dates.forEach((date) => {
         headers.push(`${date} - Datang`, `${date} - Pulang`, `${date} - Durasi`);
       });
 
       const csvRows = [headers.map(escapeCsv).join(',')];
 
       filteredParticipants.forEach((person, idx) => {
-        const row = [idx + 1, person.name, `="${person.nip || ''}"`];
+        const row = [idx + 1, person.name, `="${person.nip === '-' ? '' : person.nip}"`];
         pivotData.dates.forEach((_, dIdx) => {
           const rec = person.records[dIdx] || {};
-          row.push(
-            formatTime24(rec.checkIn),
-            formatTime24(rec.checkOut),
-            rec.duration || '-'
-          );
+          row.push(rec.checkIn || '-', rec.checkOut || '-', rec.duration || '-');
         });
         csvRows.push(row.map(escapeCsv).join(','));
       });
@@ -912,7 +835,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `Rekap_PivotTable_HKN62.csv`;
+      a.download = 'Rekap_PivotTable_HKN62.csv';
       a.click();
       URL.revokeObjectURL(url);
     }
@@ -920,10 +843,16 @@
     function escapeCsv(val) {
       const str = String(val ?? '');
       if (str.startsWith('="')) return str;
-      if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-        return `"${str.replace(/"/g, '""')}"`;
-      }
-      return str;
+      return /[",\n]/.test(str) ? `"${str.replace(/"/g, '""')}"` : str;
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     }
   </script>
 </body>
